@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
+import ButtonLink from '../link-button'
 import logo from '../../media/logo.png';
 
-let isLoggedIn = false
+let isLoggedIn = false;
 
 class Header extends Component {
     render() {
-
         return (
             <nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
                 <div className="container">
@@ -17,25 +17,21 @@ class Header extends Component {
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <div className="collapse navbar-collapse" id="navbarResponsive">
-
                         {isLoggedIn
                             ? <ul className="navbar-nav ml-auto">
                                 <li className="nav-item active">
-                                    <a className="btn btn-primary" href="/post-add.html" role="button">Post Ad</a>
+                                    <ButtonLink link={'/add-post'} name={'Post Ad'} />
                                 </li>
                                 <li className="nav-item active">
-                                    <a className="btn btn-primary" href="/post-add.html" role="button">Profile</a>
+                                    <ButtonLink link={'/profile'} name={'Profile'} />
                                 </li>
                             </ul>
                             : <ul className="navbar-nav ml-auto">
-
                                 <li className="nav-item active">
-                                    <a className="btn btn-primary" href="/login.html" role="button">Login</a>
+                                    <ButtonLink link={'/login'} name={'Login'} />
                                 </li>
                             </ul>
                         }
-
-
                     </div>
                 </div>
             </nav>
