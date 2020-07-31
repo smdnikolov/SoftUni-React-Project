@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
+import {Link} from 'react-router-dom'
 
 
-class Footer extends Component {
+class ButtonLink extends Component {
     render() {
         return (
-            <a className="btn btn-primary" href={this.props.link} role="button">{this.props.name}</a>
-
+            <Link className="btn btn-primary" to={this.props.link} role="button">{this.props.name}</Link>
         )
     }
 }
 
-export default Footer
+export default ButtonLink
