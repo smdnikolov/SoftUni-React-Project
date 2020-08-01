@@ -1,32 +1,32 @@
-import React, { Component } from 'react'
+import React from 'react'
+import { Link } from 'react-router-dom'
 
 
 
-class Login extends Component {
-    render() {
-        return (
-            <div className="container">
-                <div className="row">
-                    <div className="col">
+function Login() {
 
-                        <form className="form" action="#!">
-                            <h1 className="title">Login</h1>
+    return (
+        <div className="container">
+            <div className="row">
+                <div className="col">
 
-                            <input type="email" id="defaultLoginFormEmail" className="form-control mb-4" placeholder="E-mail" />
-                            <input type="password" id="defaultLoginFormPassword" className="form-control mb-4"
-                                placeholder="Password" />
+                    <form className="form" action="#!">
+                        <h1 className="title">Login</h1>
 
-                            <button className="btn form-btn" type="submit">Sign in</button>
+                        <input type="email" id="defaultLoginFormEmail" className="form-control mb-4" placeholder="E-mail" />
+                        <input type="password" id="defaultLoginFormPassword" className="form-control mb-4"
+                            placeholder="Password" />
 
-                            <p>Not a member?
-                            <a href="/register.html">Register</a>
-                            </p>
-                        </form>
-                    </div>
+                        <button className="btn form-btn" type="submit">Login</button>
+
+                        <p>Not a member?&nbsp;
+                            <Link to="/register">Register</Link>
+                        </p>
+                    </form>
                 </div>
             </div>
-        )
-    }
+        </div>
+    )
 }
 
 export default Login

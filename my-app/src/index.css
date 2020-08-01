@@ -3,7 +3,7 @@ body {
     
   font-family: "Arvo";
   font-size: 22px;
-  background-image: url('./media/background.jpg');
+  background-image: url('./utils/background.jpg');
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: cover;
