@@ -17,7 +17,7 @@ function Home() {
         <div className="container search">
             <div className="row">
                 <div className="col">
-                    <div className="jumbotron text-center">
+                    <div className="jumbotron">
                         <h1>Welcome to the Online Market</h1>
                         <p>Browse the Categories to find what you need
                         </p>

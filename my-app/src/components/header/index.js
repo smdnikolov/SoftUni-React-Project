@@ -12,7 +12,7 @@ function Header() {
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
             <div className="container">
                 <Link className="navbar-brand" to="/">
-                    <img src={logo} width="105" alt="" />
+                    <img className="logo" src={logo} width="105" alt="" />
                 </Link>
                 <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive"
                     aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">

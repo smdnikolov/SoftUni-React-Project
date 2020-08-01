@@ -1,5 +1,4 @@
 import React from 'react';
-// import { Link } from 'react-router-dom';
 import ads from '../../utils/testAd'
 import categories from '../../utils/categories'
 
@@ -18,7 +17,7 @@ function Details(props) {
 
                         <div>
                             <img src={ad.imgUrl} alt=""
-                                width="90%" />
+                                width="70%" />
                         </div>
 
                         <div className="details">

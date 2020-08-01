@@ -7,7 +7,8 @@ import Home from './route-componenets/home'
 import Register from './route-componenets/register'
 import Category from './route-componenets/category'
 import Details from './route-componenets/details'
-import NotFound from './route-componenets/NotFound'
+import Profile from './route-componenets/profile'
+import NotFound from './route-componenets/not-found'
 import './App.css';
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path="/register" component={Register} />
         <Route path="/category/:name" component={Category} />
         <Route path="/details/:name" component={Details} />
+        <Route path="/profile" component={Profile} />
         <Route path='*' exact component={NotFound} />
       </Switch>
       <Footer />
