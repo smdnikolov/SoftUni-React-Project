@@ -2,7 +2,7 @@ const categories = [
     {
         name: 'Homes',
         url: '/media/homes.png',
-        link: 'real-estate'
+        link: 'homes'
     },
     {
         name: 'Cars',

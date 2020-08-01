@@ -90,7 +90,7 @@ margin: 5px
   scroll-margin-inline: 5px;   
   display: block;
 }
-.info {
+.space p {
   display: -ms-flexbox;
   display: inherit;
   -ms-flex-wrap: wrap;
