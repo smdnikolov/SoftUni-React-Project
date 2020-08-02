@@ -1,9 +1,8 @@
 import React from 'react'
 import icon from '../../utils/portfolio.png'
-// import LinkButton from '../../components/link-button'
 import AdsListing from '../../components/ad-listing'
-import categories from '../../utils/categories'
 import ads from '../../utils/testAd'
+import firebase from '../../firebase.js'
 
 
 
@@ -16,7 +15,7 @@ function Profile(props) {
 
 
     return (
-        <div className="container search">
+        <div onClick={() => console.log(firebase.auth.currentUser)} className="container search">
             <div className="row">
                 <div className="col">
                     <div className="jumbotron">
@@ -25,7 +24,7 @@ function Profile(props) {
                         <div className="profile">
                             <button>My Ads</button>
                             <button>Followed Ads</button>
-                            <button>Logout</button>
+                            <button onClick={() => logout()}>Logout</button>
                         </div>
 
 
@@ -48,6 +47,15 @@ function Profile(props) {
             </div>
         </div>
     )
+
+    async function logout() {
+        try {
+            await firebase.logOut()
+            props.history.replace('/')
+        } catch (error) {
+            alert(error.message)
+        }
+    }
 }
 
 export default Profile
