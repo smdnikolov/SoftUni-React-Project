@@ -3,9 +3,6 @@ import { UserContext } from './Store'
 import './App.css';
 import Navigation from './Navigation'
 
-
-
-
 function App() {
 
   const [user, setUser] = useContext(UserContext)

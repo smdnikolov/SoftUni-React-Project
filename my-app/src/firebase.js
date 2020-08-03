@@ -1,8 +1,7 @@
 import app from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/database'
-import key from'./key'
-
+import key from './key'
 
 const firebaseConfig = {
     apiKey: key,
@@ -14,8 +13,6 @@ const firebaseConfig = {
     appId: "1:533289266506:web:1833febb1272c471fe25b3"
 };
 
-
-
 class Firebase {
     constructor() {
         app.initializeApp(firebaseConfig);
@@ -26,6 +23,7 @@ class Firebase {
     signUp(email, password) {
         return this.auth.signInWithEmailAndPassword(email, password)
     }
+
     logOut() {
         return this.auth.signOut()
     }
@@ -33,5 +31,6 @@ class Firebase {
     register(email, password) {
         return this.auth.createUserWithEmailAndPassword(email, password)
     }
+
 }
 export default new Firebase()

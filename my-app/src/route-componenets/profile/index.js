@@ -5,6 +5,7 @@ import ads from '../../utils/testAd'
 import firebase from '../../firebase.js'
 import { UserContext } from '../../Store'
 import { useHistory, Redirect } from 'react-router-dom'
+import ErrorAlert from '../../components/error-alert'
 
 
 function Profile() {
@@ -13,12 +14,25 @@ function Profile() {
     const listAds = ads
     const [user, setUser] = useContext(UserContext)
     const [error, setError] = useState('')
+
+    async function logout() {
+        try {
+            await firebase.logOut()
+            localStorage.setItem('user', '')
+            setUser(localStorage.getItem('user'))
+            history.replace('/')
+        } catch (error) {
+            setError(error.message)
+        }
+    }
+
     if (!user) {
-        return <Redirect to='/' />
+        return <Redirect to='/login' />
+
     }
     return (
         <div className="container">
-            {error ? <div><div className="alert alert-danger" role="alert">{error}</div></div> : null}
+            {error ? <ErrorAlert message={error} /> : null}
             <div className="row">
                 <div className="row">
                     <div className="col">
@@ -51,17 +65,6 @@ function Profile() {
             </div>
         </div>
     )
-
-    async function logout() {
-        try {
-            await firebase.logOut()
-            localStorage.setItem('user', '')
-            setUser(localStorage.getItem('user'))
-            history.replace('/')
-        } catch (error) {
-            setError(error.message)
-        }
-    }
 }
 
 export default Profile

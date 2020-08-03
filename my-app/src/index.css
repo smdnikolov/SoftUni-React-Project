@@ -346,8 +346,8 @@ margin: 5px
 }
 .alert-danger {
   color: #721c24;
-  background-color: #f8d7da;
+  background-color: #f8d7dacf;
   top: -75px;
-  border-color: #f5c6cb;
   display: inline-flex;
+  border: 2px solid #721c24;
 }
