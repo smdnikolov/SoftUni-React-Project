@@ -67,13 +67,20 @@ margin: 5px
   border-color: #ffaa33;
   font-size: x-large;
 }
-.btn-primary:hover, .btn-primary:focus, .btn-primary:active  {
+.btn-primary:hover  {
 
   opacity: 0.8;
   color: #fff;
   background-color: #545b62;
   border-color: #4e555b;
 
+}
+.btn-primary:focus, .btn-primary:active {
+  color: #545b62;
+  background-color: #ffaa33;
+  border-color: #ffaa33;
+  font-size: x-large;
+  outline:none !important
 }
 .col-sm-8 {
   text-align: center;
@@ -336,4 +343,11 @@ margin: 5px
 }
 .err a{
   margin-bottom:50px
+}
+.alert-danger {
+  color: #721c24;
+  background-color: #f8d7da;
+  top: -75px;
+  border-color: #f5c6cb;
+  display: inline-flex;
 }

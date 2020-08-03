@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState, useContext } from 'react'
+import { Link, useHistory } from 'react-router-dom'
 import firebase from '../../firebase'
+import { UserContext } from '../../Store'
 
 
 
-function Login(props) {
-
+function Login() {
+    const history = useHistory()
+    const [, setUser] = useContext(UserContext)
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
@@ -14,11 +16,11 @@ function Login(props) {
         <div className="container">
             {error
                 ? <div>
-                    <div class="alert alert-danger" role="alert">
+                    <div className="alert alert-danger" role="alert">
                         {error}</div>
 
                 </div>
-                : <p></p>
+                : null
             }
             <div className="row">
                 <div className="col">
@@ -26,7 +28,7 @@ function Login(props) {
                     <form className="form" onSubmit={e => e.preventDefault()}>
                         <h1 className="title">Login</h1>
 
-                        <input type="text" i className="form-control mb-4" placeholder="E-mail" value={email} onChange={e => setEmail(e.target.value)} />
+                        <input type="text" className="form-control mb-4" placeholder="E-mail" value={email} onChange={e => setEmail(e.target.value)} />
                         <input type="password" id="defaultLoginFormPassword" className="form-control mb-4" value={password} onChange={e => setPassword(e.target.value)}
                             placeholder="Password" />
 
@@ -45,10 +47,15 @@ function Login(props) {
     async function signUp(email, password) {
         try {
             await firebase.signUp(email, password)
-            props.history.replace('/profile')
+            firebase.auth.onAuthStateChanged(() => {
+                if (firebase.auth.currentUser) {
+                    localStorage.setItem('user', `${firebase.auth.currentUser.email}`)
+                    setUser(localStorage.getItem('user'))
+                }
+            })
+            history.replace('/profile')
         } catch (error) {
             setError(error.message)
-
         }
     }
 }

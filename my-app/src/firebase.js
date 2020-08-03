@@ -1,10 +1,11 @@
 import app from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/database'
+import key from'./key'
 
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDaZ_ogAb12zKHHNmMWpI-cWhc8Ge15mYg",
+    apiKey: key,
     authDomain: "the-olm.firebaseapp.com",
     databaseURL: "https://the-olm.firebaseio.com",
     projectId: "the-olm",

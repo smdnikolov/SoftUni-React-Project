@@ -2,14 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import { BrowserRouter } from "react-router-dom"
+import Store from './Store'
+
+
+
 
 
 
 ReactDOM.render(
-  <BrowserRouter onUpdate={() => window.scrollTo(0, 0)}>
+  <Store>
     <App />
-  </BrowserRouter>,
+  </Store>,
   document.getElementById('root')
 );
 

@@ -15,7 +15,7 @@ function NotFound() {
 
             <div className="row">
                 <div className="col">
-                    <img src={notFoundImg} width="50%" alt="" />
+                    <img src={notFoundImg} width="30%" alt="" />
                 </div>
             </div>
 
