@@ -21,7 +21,7 @@ function Header() {
                         ? <ul className="navbar-nav ml-auto">
                             <li className="nav-item active">
 
-                                <ButtonLink link='/add-post' name='Post Ad' />
+                                <ButtonLink link='/post-ad' name='Post Ad' />
                             </li>
                             <li className="nav-item active">
                                 <ButtonLink link='/profile' name='Profile' />

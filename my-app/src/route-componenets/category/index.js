@@ -1,18 +1,39 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useParams } from 'react-router-dom';
 import categories from '../../utils/categories'
-import ads from '../../utils/testAd'
+import firebase from '../../firebase'
+
 import AdsListing from '../../components/ad-listing'
+import Loader from '../../components/loader'
 
 
-function Category(props) {
+function Category() {
 
-    const urlEnd = props.match.params.name
+    const [loading, setLoading] = useState(true)
+    const [ads, setAds] = useState([])
+    const urlEnd = useParams().name
     const category = categories.filter(x => x.link === urlEnd)[0]
-    const listAds = ads.filter(x => x.category.toLocaleLowerCase() === urlEnd)
+
+
+    useEffect(() => {
+        firebase.getAds().then((res) => {
+            let fetchedData = []
+            for (let key in res.data) {
+                fetchedData.unshift({
+                    id: key,
+                    ...res.data[key]
+                })
+            }
+            fetchedData = fetchedData.filter(x => x.category.toLowerCase() === urlEnd)
+            setAds(fetchedData)
+            setLoading(false)
+        }).catch(err => {
+            console.log(err)
+        })
+    }, [])
 
     return (
-        <div className="container search">
+        <div className="container search" onClick={() => console.log(ads)}>
             <div className="row">
                 <div className="col">
                     <div className="jumbotron text-center">
@@ -32,7 +53,9 @@ function Category(props) {
                             <Link className="btn btn-primary" to="/register.html" role="button">Search</Link>
                         </form>
                     </div>
-                    <AdsListing ads={listAds} name={category.name} />
+                    {loading
+                        ? <div className="jumbotron"><h1>Loading</h1><Loader /></div>
+                        : <AdsListing ads={ads} name={category.name} />}
                 </div>
             </div>
         </div>

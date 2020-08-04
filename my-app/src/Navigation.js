@@ -8,13 +8,15 @@ import Register from './route-componenets/register'
 import Category from './route-componenets/category'
 import Details from './route-componenets/details'
 import Profile from './route-componenets/profile'
+import PostAd from './route-componenets/post-ad'
 import NotFound from './route-componenets/not-found'
 import './App.css';
+
 
 function Navigation() {
 
     return (
-        <BrowserRouter onUpdate={() => window.scrollTo(0, 0)}>
+        <BrowserRouter>
             <Header />
             <Switch>
                 <Route path="/" exact component={Home} />
@@ -23,6 +25,7 @@ function Navigation() {
                 <Route path="/category/:name" component={Category} />
                 <Route path="/details/:name" component={Details} />
                 <Route path="/profile" component={Profile} />
+                <Route path="/post-ad" component={PostAd} />
                 <Route path='*' exact component={NotFound} />
             </Switch>
             <Footer />

@@ -2,6 +2,7 @@ import app from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/database'
 import key from './key'
+import axios from 'axios'
 
 const firebaseConfig = {
     apiKey: key,
@@ -31,6 +32,12 @@ class Firebase {
     register(email, password) {
         return this.auth.createUserWithEmailAndPassword(email, password)
     }
+    async postAd(data) {
+        return await axios.post('https://the-olm.firebaseio.com/ads.json', data)
+    }
 
+    async getAds() {
+        return await axios.get('https://the-olm.firebaseio.com/ads.json')
+    }
 }
 export default new Firebase()

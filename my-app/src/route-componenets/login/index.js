@@ -1,36 +1,24 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { Link, useHistory, Redirect } from 'react-router-dom'
-import firebase from '../../firebase'
 import { UserContext } from '../../Store'
+import firebase from '../../firebase'
+import Loader from '../../components/loader'
 import ErrorAlert from '../../components/error-alert'
-import axios from '../../axios'
 
 
 
 function Login() {
     const history = useHistory()
+    const [loading, setLoading] = useState(false)
     const [user, setUser] = useContext(UserContext)
     const [error, setError] = useState('')
-    const [data, setData] = useState(null)
-
-    useEffect(async () => {
-        await axios.get('ads.json').then(res => {
-            let fetchedData = []
-            for (let key in res.data) {
-                fetchedData.push({
-                    id: key,
-                    ...res.data[key]
-                })
-            }
-            setData(fetchedData)
-        }).catch(err => console.log(err))
-    }, [])
 
     async function signUp(event) {
         event.preventDefault()
         const { email, password } = event.target.elements
-        try {
-            await firebase.signUp(email.value, password.value)
+
+        await firebase.signUp(email.value, password.value).then(() => {
+            setLoading(true)
             firebase.auth.onAuthStateChanged(() => {
                 if (firebase.auth.currentUser) {
                     localStorage.setItem('user', `${firebase.auth.currentUser.email}`)
@@ -38,10 +26,10 @@ function Login() {
                 }
             })
             history.replace('/profile')
-        } catch (error) {
-            console.log(error)
-            setError(error.message)
-        }
+        }).catch(err => {
+            console.log(err.message)
+            setError(err.message)
+        })
     }
 
     if (user) {
@@ -49,7 +37,7 @@ function Login() {
     }
 
     return (
-        <div onClick={() => console.log(data)} className="container">
+        <div className="container">
             {error ? <ErrorAlert message={error} /> : null}
             <div className="row">
                 <div className="col">
@@ -58,6 +46,7 @@ function Login() {
                         <input type="text" name="email" className="form-control mb-4" placeholder="E-mail" />
                         <input type="password" name="password" className="form-control mb-4" placeholder="Password" />
                         <button className="btn form-btn" type="submit">Login</button>
+                        {loading ? <div><Loader /></div> : null}
                         <p>Not a member?&nbsp;
                             <Link to="/register">Register</Link>
                         </p>

@@ -1,16 +1,17 @@
 import React from 'react'
+import LinkButton from '../link-button'
 import { Link } from 'react-router-dom'
 
 function AdListing(props) {
 
     function listAd(ad) {
         return (
-            <div className="container" key={ad._id}>
-                <Link to={"/details/" + ad._id}>
+            <div className="container" key={ad.id}>
+                <Link to={"/details/" + ad.id}>
                     <div className="row row-container">
                         <div className="col-sm-4 services-section">
                             <img className="img-card"
-                                src={ad.imgUrl}
+                                src={ad.imageUrl}
                                 alt="" />
                         </div>
                         <div className="col-sm-8 services-section">
@@ -55,10 +56,13 @@ function AdListing(props) {
                 </div>
 
                 : <div className="ad-container">
-                    No Found Ads
-            </div>
+                    There are no ads in {props.name} yet
+                    <div>
+                        <Link to="/post-ad" >Be the first to Post</Link>
+                    </div>
+                </div>
             }
-        </div>
+        </div >
     )
 }
 export default AdListing
