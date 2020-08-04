@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react'
 import { UserContext } from '../../Store'
-import { useHistory, Redirect } from 'react-router-dom'
+import {  Redirect } from 'react-router-dom'
 import ErrorAlert from '../../components/error-alert'
 import Loader from '../../components/loader'
 import firebase from '../../firebase.js'
 
 
-function PostAd(props) {
+function PostAd() {
 
     const [user,] = useContext(UserContext)
     const [error, setError] = useState('')
@@ -76,7 +76,6 @@ function PostAd(props) {
                         </select>
                         <p>Description</p>
                         <textarea name="description" className="form-control mb-4" cols="30" rows="5" placeholder="Description" />
-
                         <button className="btn form-btn">Post</button>
                         {loading ? <div><Loader /></div> : null}
                     </form>

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import categories from '../../utils/categories'
 import firebase from '../../firebase'
-
 import AdsListing from '../../components/ad-listing'
 import Loader from '../../components/loader'
 
@@ -30,10 +29,10 @@ function Category() {
         }).catch(err => {
             console.log(err)
         })
-    }, [])
+    }, [urlEnd])
 
     return (
-        <div className="container search" onClick={() => console.log(ads)}>
+        <div className="container search">
             <div className="row">
                 <div className="col">
                     <div className="jumbotron text-center">

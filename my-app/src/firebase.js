@@ -20,24 +20,23 @@ class Firebase {
         this.auth = app.auth()
         this.db = app.database()
     }
-
     signUp(email, password) {
         return this.auth.signInWithEmailAndPassword(email, password)
     }
-
     logOut() {
         return this.auth.signOut()
     }
-
     register(email, password) {
         return this.auth.createUserWithEmailAndPassword(email, password)
     }
     async postAd(data) {
         return await axios.post('https://the-olm.firebaseio.com/ads.json', data)
     }
-
     async getAds() {
         return await axios.get('https://the-olm.firebaseio.com/ads.json')
+    }
+    async getAd(id) {
+        return await axios.get(`https://the-olm.firebaseio.com/ads/${id}.json`)
     }
 }
 export default new Firebase()

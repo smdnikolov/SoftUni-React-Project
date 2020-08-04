@@ -23,7 +23,7 @@ function Navigation() {
                 <Route path="/login" component={Login} />
                 <Route path="/register" component={Register} />
                 <Route path="/category/:name" component={Category} />
-                <Route path="/details/:name" component={Details} />
+                <Route path="/details/:id" exact component={Details} />
                 <Route path="/profile" component={Profile} />
                 <Route path="/post-ad" component={PostAd} />
                 <Route path='*' exact component={NotFound} />
