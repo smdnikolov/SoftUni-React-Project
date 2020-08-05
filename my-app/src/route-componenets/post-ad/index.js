@@ -1,19 +1,17 @@
 import React, { useContext, useState } from 'react'
 import { UserContext } from '../../Store'
-import {  Redirect } from 'react-router-dom'
+import { Redirect, useHistory } from 'react-router-dom'
 import ErrorAlert from '../../components/error-alert'
 import Loader from '../../components/loader'
 import firebase from '../../firebase.js'
 
 
 function PostAd() {
-
     const [user,] = useContext(UserContext)
-    const [error, setError] = useState('')
+    const [error,] = useState('')
     const [price, setPrice] = useState(0)
     const [loading, setLoading] = useState(false)
-
-
+    const history = useHistory()
     function getCurrentDate() {
         const date = new Date()
         const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1
@@ -29,11 +27,17 @@ function PostAd() {
         e.preventDefault()
         const { title, phoneNumber, city, price, category, condition, description, imageUrl } = e.target.elements
         const date = getCurrentDate()
+        const followingUsers = ['тест']
         const ad = {
-            email: user, title: title.value, phoneNUmber: phoneNumber.value, imageUrl: imageUrl.value, city: city.value, price: price.value, condition: condition.value, category: category.value, description: description.value, date
+            email: user, title: title.value, phoneNUmber: phoneNumber.value, imageUrl: imageUrl.value, city: city.value, price: price.value, condition: condition.value, category: category.value, description: description.value, date, followingUsers
         }
         setLoading(true)
-        firebase.postAd(ad).then(() => setLoading(false)).catch(err => { setError(err.message) })
+        await firebase.postAd(ad).then((res) => {
+            setLoading(false)
+            history.push(`/details/${res.data.name}`)
+        }).catch(() => {
+            history.push(`/network-error`)
+        })
     }
 
     if (!user) {
@@ -76,7 +80,7 @@ function PostAd() {
                         </select>
                         <p>Description</p>
                         <textarea name="description" className="form-control mb-4" cols="30" rows="5" placeholder="Description" />
-                        <button className="btn form-btn">Post</button>
+                        <button className="btn shadow-none">Post</button>
                         {loading ? <div><Loader /></div> : null}
                     </form>
                 </div>

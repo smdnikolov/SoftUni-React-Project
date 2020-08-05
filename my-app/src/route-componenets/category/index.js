@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useHistory } from 'react-router-dom';
 import categories from '../../utils/categories'
 import firebase from '../../firebase'
 import AdsListing from '../../components/ad-listing'
@@ -7,7 +7,7 @@ import Loader from '../../components/loader'
 
 
 function Category() {
-
+    const history = useHistory()
     const [loading, setLoading] = useState(true)
     const [ads, setAds] = useState([])
     const urlEnd = useParams().name
@@ -15,27 +15,33 @@ function Category() {
 
 
     useEffect(() => {
+        let unmounted = false;
         firebase.getAds().then((res) => {
-            let fetchedData = []
-            for (let key in res.data) {
-                fetchedData.unshift({
-                    id: key,
-                    ...res.data[key]
-                })
+            if (!unmounted) {
+                let fetchedData = []
+                for (let key in res.data) {
+                    fetchedData.unshift({
+                        id: key,
+                        ...res.data[key]
+                    })
+                }
+                fetchedData = fetchedData.filter(x => x.category.toLowerCase() === urlEnd)
+                setAds(fetchedData)
+                setLoading(false)
             }
-            fetchedData = fetchedData.filter(x => x.category.toLowerCase() === urlEnd)
-            setAds(fetchedData)
-            setLoading(false)
-        }).catch(err => {
-            console.log(err)
+        }).catch(() => {
+            if (!unmounted) {
+                history.push(`/network-error`)
+            }
         })
-    }, [urlEnd])
+        return () => { unmounted = true };
+    }, [urlEnd, history])
 
     return (
         <div className="container search">
             <div className="row">
                 <div className="col">
-                    <div className="jumbotron text-center">
+                    <div className="jumbotron">
                         <h1>{category.name}</h1>
                         <h1>
                             <img src={category.url} alt="" width="200px" />
@@ -49,7 +55,7 @@ function Category() {
                                 <option value="Varna">Varna</option>
                                 <option value="Burgas">Burgas</option>
                             </select>
-                            <Link className="btn btn-primary" to="/register.html" role="button">Search</Link>
+                            <Link className="btn btn-primary shadow-none" to="/register.html" role="button">Search</Link>
                         </form>
                     </div>
                     {loading

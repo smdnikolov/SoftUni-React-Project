@@ -16,21 +16,28 @@ function Register() {
         event.preventDefault()
 
         const { email, password, rePassword } = event.target.elements
-        if (rePassword.value === password.value) {
-            await firebase.register(email.value, password.value).then(() => {
-                firebase.auth.onAuthStateChanged(() => {
-                    setLoading(true)
-                    localStorage.setItem('user', `${firebase.auth.currentUser.email}`)
-                    setUser(localStorage.getItem('user'))
+        let unmounted = false;
+        if (!unmounted) {
+            if (rePassword.value === password.value) {
+                setLoading(true)
+                await firebase.register(email.value, password.value).then(() => {
+
+                    firebase.auth.onAuthStateChanged((res) => {
+                        if (res) {
+                            localStorage.setItem('user', `${firebase.auth.currentUser.email}`)
+                            setUser(localStorage.getItem('user'))
+                            history.push('/profile')
+                        }
+                    })
+                }).catch(err => {
+                    console.log(err)
+                    setError(err.message)
                 })
-                history.replace('/profile')
-            }).catch(err => {
-                console.log(err)
-                setError(err.message)
-            })
-        } else {
-            setError('The passwords must match!')
+            } else {
+                setError('The passwords must match!')
+            }
         }
+        return () => { unmounted = true };
     }
 
     if (user) {
@@ -47,7 +54,7 @@ function Register() {
                         <input type="text" name="email" className="form-control mb-4" placeholder="E-mail" />
                         <input type="password" name="password" className="form-control mb-4" placeholder="Password" />
                         <input type="password" name="rePassword" className="form-control mb-4" placeholder="Repeat Password" />
-                        <button className="btn form-btn" type="submit">Register</button>
+                        <button className="btn" type="submit">Register</button>
                         {loading ? <div><Loader /></div> : null}
                         <p>Already a member?&nbsp;
                         <Link to="/login">Login</Link>

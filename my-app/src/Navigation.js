@@ -10,6 +10,7 @@ import Details from './route-componenets/details'
 import Profile from './route-componenets/profile'
 import PostAd from './route-componenets/post-ad'
 import NotFound from './route-componenets/not-found'
+import NetworkError from './route-componenets/network-error'
 import './App.css';
 
 
@@ -26,6 +27,7 @@ function Navigation() {
                 <Route path="/details/:id" exact component={Details} />
                 <Route path="/profile" component={Profile} />
                 <Route path="/post-ad" component={PostAd} />
+                <Route path="/network-error" component={NetworkError} />
                 <Route path='*' exact component={NotFound} />
             </Switch>
             <Footer />

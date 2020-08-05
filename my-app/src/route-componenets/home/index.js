@@ -33,7 +33,7 @@ function Home() {
                                 <option value="Varna">Varna</option>
                                 <option value="Burgas">Burgas</option>
                             </select>
-                            <a className="btn btn-primary" href="/register.html" role="button">Search</a>
+                            <a className="btn  shadow-none" href="/register.html" role="button">Search</a>
                         </form>
                     </div>
                 </div>

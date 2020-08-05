@@ -1,5 +1,5 @@
-import React, { useState} from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link, } from 'react-router-dom'
 
 function AdListing(props) {
 
@@ -54,11 +54,11 @@ function AdListing(props) {
                     <h1>All {props.name} Ads</h1>
                     <div className="dropdown">
                         <p>Sorted By {sorting}</p>
-                        <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sort By</button>
+                        <button className="btn btn-secondary dropdown-toggle shadow-none" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sort By</button>
                         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <button onClick={(е) => sort(е, props.ads)} className="btn-primary">Latest</button>
-                            <button onClick={(е) => sort(е, ads)} className="btn-primary">Cheapest</button>
-                            <button onClick={(е) => sort(е, ads)} className="btn-primary">Most Expensive</button>
+                            <button onClick={(е) => sort(е, props.ads)} className="btn-primary shadow-none">Latest</button>
+                            <button onClick={(е) => sort(е, ads)} className="btn-primary shadow-none">Cheapest</button>
+                            <button onClick={(е) => sort(е, ads)} className="btn-primary shadow-none">Most Expensive</button>
                         </div>
                     </div>
                     <div className="ad-container">{ads.map(x => listAd(x))

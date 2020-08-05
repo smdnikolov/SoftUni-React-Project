@@ -6,7 +6,7 @@ function ButtonLink(props) {
 
     return (
         // eslint-disable-next-line
-        <Link to={props.link} className="btn btn-primary" role="button">{props.name}</Link>
+        <Link to={props.link} className="btn shadow-none" role="button">{props.name}</Link>
 
     )
 

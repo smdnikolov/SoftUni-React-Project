@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom'
+import { useParams, useHistory, Link, useLocation } from 'react-router-dom'
 import firebase from '../../firebase'
 import Loader from '../../components/loader'
 import categories from '../../utils/categories'
@@ -8,31 +8,33 @@ import categories from '../../utils/categories'
 
 
 function Details() {
-
+    const path = useLocation().pathname
     const id = useParams().id
     const [loading, setLoading] = useState(true)
     const [ad, setAd] = useState(null)
     const [ctgUrl, setCtgUrl] = useState(null)
-    const browserHistory = useHistory()
-
+    const user = localStorage.getItem('user')
+    const history = useHistory()
 
     useEffect(() => {
-
+        let unmounted = false;
         firebase.getAd(id).then((res) => {
-            if (!res.data) {
-                browserHistory.push("/not-found");
-            } else {
-                setCtgUrl(categories.filter(x => x.name === res.data.category)[0].url)
-
-
-                setAd(res.data)
-                setLoading(false)
+            if (!unmounted) {
+                if (!res.data) {
+                    history.push("/not-found");
+                } else {
+                    setCtgUrl(categories.filter(x => x.name === res.data.category)[0].url)
+                    setAd(res.data)
+                    setLoading(false)
+                }
             }
-        }).catch(err => {
-            console.log(err)
+        }).catch(() => {
+            if (!unmounted) {
+                history.push(`/network-error`)
+            }
         })
-    }, [id, browserHistory])
-
+        return () => { unmounted = true };
+    }, [id, history])
 
     return (
         <div>
@@ -67,12 +69,21 @@ function Details() {
                                 <p>Description: </p>
                                 <p>{ad.description} </p>
                                 <hr />
-                                <button className="btn-primary">Follow</button>
-                                <button className="btn-primary">Forget</button>
-                                <hr />
-                                <button className="btn-primary">Edit ✎</button>
-                                <button className="btn-primary">Close 🗙</button>
-
+                                {user
+                                    ? <div>
+                                        {user === ad.email
+                                            ? <div>
+                                                <button className="btn-primary shadow-none">Edit ✎</button>
+                                                <button className="btn-primary shadow-none">Close 🗙</button>
+                                            </div>
+                                            : <div>
+                                                <button className="btn-primary shadow-none">Follow</button>
+                                                <button className="btn-primary shadow-none">Forget</button>
+                                            </div>
+                                        }
+                                    </div>
+                                    : <Link onClick={() => localStorage.setItem('prevPath', path)} to='/login'>Login to Follow</Link>
+                                }
                             </div>
                         </div>
                     </div>

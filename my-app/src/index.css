@@ -61,33 +61,41 @@ a:hover{
 .nav-item  {
 margin: 5px
 }
-.btn-primary {
-  color: #545b62;
-  background-color: #ffaa33;
+.btn-primary, .btn-primary:focus, .shadow-none:focus,.btn, .btn:focus {
+  color: #545b62 ;
+  background-color: #ffaa33 ;
   border-color: #ffaa33;
   font-size: x-large;
+  outline:none
+} 
+.btn-primary:active, .shadow-none:active, .btn:active {
+  color: #545b62 ;
+  background-color: #ffaa33 ;
+  border-color: #ffaa33;
+  font-size: x-large;
+  outline:none
 }
-.btn-primary:hover  {
+.btn-primary:hover, .shadow-none:hover,.btn:hover  {
 
-  opacity: 0.8;
-  color: #fff;
-  background-color: #545b62;
+  color:#fff;
+  background-color: #4e555b;
   border-color: #4e555b;
 
 }
-.btn-primary:focus, .btn-primary:active {
-  color: #545b62;
-  background-color: #ffaa33;
-  border-color: #ffaa33;
-  font-size: x-large;
-  outline:none !important
+.btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+  /* color: #fff; */
+  /* background-color: #0062cc; */
+  border-color: #4e555b;
+  /* outline: none; */
 }
+
 .col-sm-8 {
   text-align: center;
 }
 .ad-container {
   padding:0.9rem;
 }
+
 .row-container {
   background-color: #6c757d52;
   height:100%;
@@ -150,22 +158,6 @@ margin: 5px
   transition: border-color .15s;
 }
 
-.form-btn {
-  color: #545b62;
-  background-color: #ffaa33;
-  border-color: #ffaa33;
-  border-style: solid;
-  font-size: x-large;
-  border-radius: 5px;
-  margin-bottom: 35px;
-}
-.form-btn:focus, .form-btn:hover, .form-btn:active {
-  opacity: 0.8;
-  color: #fff;
-  background-color: #545b62;
-  border-color: #4e555b;
-
-}
 .form-control:focus {
   color: #545b62;
   background-color: #fff;
@@ -182,16 +174,7 @@ margin: 5px
 .jumbotron h1 {
   margin-bottom: 50px;
 }
-.jumbotron button {
-  color: #545b62;
-  background-color: #ffaa33;
-  border-color: #ffaa33;
-  font-size: x-large;
-  border-radius: 5px;
-}
-.jumbotron button:hover{
-  opacity: 0.8;
-}
+
 .jumbotron input{
  margin-right: 25px;
   display: inline-block;
@@ -220,6 +203,9 @@ margin: 5px
   transition: border-color .15s;
   margin-right: 25px;  
 }
+form .btn{
+  margin-bottom:40px;
+}
 .jumbotron input:focus {
 
   background-color: #fff;
@@ -237,6 +223,10 @@ margin: 5px
   border: 1px solid #ced4da;
   border-radius: .25rem;
   transition: border-color .15s  
+}
+.btn.focus, .btn:focus {
+  outline: 0;
+ box-shadow: none;
 }
 
 .jumbotron select:focus {
@@ -260,31 +250,17 @@ margin: 5px
 .jumbotron form{
   display: inline-flex;
 }
-.jumbotron button {
-  color: #545b62;
-  background-color: #ffaa33;
-  border-color: #ffaa33;
-  border-style: solid;
-  font-size: x-large;
-  border-radius: 5px;
-  padding: 4px 10px;
+.jumbotron button, .jumbotron button:focus {
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
 }
-.jumbotron button:focus {
-  color: #ffaa33;
-  background-color: #ffaa33;
-  border-color: #ffaa33;
-  border-style: solid;
-  font-size: x-large;
-  border-radius: 5px;
-  padding: 4px 10px;
-  opacity:0.7;
-  outline:none;
+.jumbotron button:focus{
+   border: none;
 }
 .sorting {
   display: inline-block;
   background-color: #6c757d52;
-  
-  
 }
 .sorting ul {
   display: inline-block;
@@ -299,6 +275,7 @@ margin: 5px
 }
 .details button {
   margin-right:20px;
+  width:120px
 }
 .title {
   padding-bottom: 45px;
@@ -311,7 +288,13 @@ margin: 5px
   margin-bottom: 50px;
 }
 .profile button {
- margin-right: 10px;
+  margin-right: 10px;
+  padding: 10px;
+}
+.btn-primary:not(:disabled):not(.disabled).active:focus, .btn-primary:not(:disabled):not(.disabled):active:focus, .show>.btn-primary.dropdown-toggle:focus {
+  box-shadow: none;
+  padding: 10px;
+  background: #545b62;
 }
 .dropdown-item{
   color: #ffaa33;
@@ -350,4 +333,7 @@ margin: 5px
   top: -75px;
   display: inline-flex;
   border: 2px solid #721c24;
+}
+.profile-list{
+  display:none;
 }
