@@ -9,6 +9,7 @@ import Loader from '../../components/loader'
 function Category() {
     const history = useHistory()
     const [loading, setLoading] = useState(true)
+    const [message, setMessage] = useState('')
     const [ads, setAds] = useState([])
     const urlEnd = useParams().name
     const category = categories.filter(x => x.link === urlEnd)[0]
@@ -27,6 +28,7 @@ function Category() {
                 }
                 fetchedData = fetchedData.filter(x => x.category.toLowerCase() === urlEnd)
                 setAds(fetchedData)
+                setMessage(`There are no Ads in ${urlEnd} yet`)
                 setLoading(false)
             }
         }).catch(() => {
@@ -60,7 +62,7 @@ function Category() {
                     </div>
                     {loading
                         ? <div className="jumbotron"><h1>Loading</h1><Loader /></div>
-                        : <AdsListing ads={ads} name={category.name} />}
+                        : <AdsListing ads={ads} message={message} />}
                 </div>
             </div>
         </div>

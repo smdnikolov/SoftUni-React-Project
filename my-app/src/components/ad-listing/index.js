@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
-import { Link, } from 'react-router-dom'
+import React, { useState, } from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import BrowseCategories from '../../components/browse-categories'
+
 
 function AdListing(props) {
-
     const [ads, setAds] = useState(props.ads)
     const [sorting, setSorting] = useState('Latest')
+    const location = useLocation().pathname
 
     function listAd(ad) {
         return (
@@ -65,10 +67,19 @@ function AdListing(props) {
                     }</div>
                 </div>
                 : <div className="ad-container">
-                    There are no ads in {props.name} yet
-                    <div>
-                        <Link to="/post-ad" >Be the first to Post</Link>
-                    </div>
+                    {props.message}
+                    {location !== '/profile' || props.message === 'You have not followed any Ads yet'
+                        ? <div>
+                            {props.message === 'You have not followed any Ads yet'
+                                ? <div>
+                                    <h3>Browse Categories</h3>
+                                    <BrowseCategories />
+                                </div>
+                                : <div> <Link to="/post-ad" >Be the first to Post</Link></div>
+                            }
+                        </div>
+                        : <div> <Link to="/post-ad" >Post your first Ad</Link></div>
+                    }
                 </div>
             }
         </div >

@@ -23,7 +23,8 @@ class Firebase {
     signUp(email, password) {
         return this.auth.signInWithEmailAndPassword(email, password)
     }
-    logOut() {
+    async logOut() {
+        localStorage.setItem('user', '')
         return this.auth.signOut()
     }
     register(email, password) {

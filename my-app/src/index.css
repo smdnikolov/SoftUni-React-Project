@@ -334,6 +334,6 @@ form .btn{
   display: inline-flex;
   border: 2px solid #721c24;
 }
-.profile-list{
-  display:none;
+.ad-container h3{
+  margin-top:50px
 }
