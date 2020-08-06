@@ -14,6 +14,7 @@ const firebaseConfig = {
     appId: "1:533289266506:web:1833febb1272c471fe25b3"
 };
 
+
 class Firebase {
     constructor() {
         app.initializeApp(firebaseConfig);
@@ -23,12 +24,12 @@ class Firebase {
     signUp(email, password) {
         return this.auth.signInWithEmailAndPassword(email, password)
     }
+    register(email, password) {
+        return this.auth.createUserWithEmailAndPassword(email, password)
+    }
     async logOut() {
         localStorage.setItem('user', '')
         return this.auth.signOut()
-    }
-    register(email, password) {
-        return this.auth.createUserWithEmailAndPassword(email, password)
     }
     async postAd(data) {
         return await axios.post('https://the-olm.firebaseio.com/ads.json', data)
@@ -38,6 +39,9 @@ class Firebase {
     }
     async getAd(id) {
         return await axios.get(`https://the-olm.firebaseio.com/ads/${id}.json`)
+    }
+    async del(id) {
+        return axios.delete(`https://the-olm.firebaseio.com/ads/${id}.json`)
     }
 }
 export default new Firebase()

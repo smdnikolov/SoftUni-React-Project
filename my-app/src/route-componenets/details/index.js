@@ -4,9 +4,6 @@ import firebase from '../../firebase'
 import Loader from '../../components/loader'
 import categories from '../../utils/categories'
 
-
-
-
 function Details() {
     const path = useLocation().pathname
     const id = useParams().id
@@ -16,24 +13,27 @@ function Details() {
     const user = localStorage.getItem('user')
     const history = useHistory()
 
+    const closeAd = (id) => {
+        firebase.del(id).then(() => {
+            history.push('/profile')
+        }).catch(() => history.push('/network-error'))
+    }
+    const followAd = (id) => {
+        
+    }
+
     useEffect(() => {
-        let unmounted = false;
+
         firebase.getAd(id).then((res) => {
-            if (!unmounted) {
-                if (!res.data) {
-                    history.push("/not-found");
-                } else {
-                    setCtgUrl(categories.filter(x => x.name === res.data.category)[0].url)
-                    setAd(res.data)
-                    setLoading(false)
-                }
+            if (!res.data) {
+                history.push("/not-found");
+            } else {
+                setCtgUrl(categories.filter(x => x.name === res.data.category)[0].url)
+                setAd(res.data)
+                setLoading(false)
             }
-        }).catch(() => {
-            if (!unmounted) {
-                history.push(`/network-error`)
-            }
-        })
-        return () => { unmounted = true };
+        }).catch(() => history.push(`/network-error`))
+
     }, [id, history])
 
     return (
@@ -74,7 +74,7 @@ function Details() {
                                         {user === ad.email
                                             ? <div>
                                                 <button className="btn-primary shadow-none">Edit ✎</button>
-                                                <button className="btn-primary shadow-none">Close 🗙</button>
+                                                <button onClick={() => closeAd(id)} className="btn-primary shadow-none">Close 🗙</button>
                                             </div>
                                             : <div>
                                                 <button className="btn-primary shadow-none">Follow</button>

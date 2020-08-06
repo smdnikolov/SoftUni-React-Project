@@ -4,7 +4,7 @@ import AdsListing from '../../components/ad-listing'
 import Loader from '../../components/loader'
 import firebase from '../../firebase.js'
 import { UserContext } from '../../Store'
-import { useHistory,} from 'react-router-dom'
+import { useHistory, Redirect } from 'react-router-dom'
 
 function Profile() {
 
@@ -37,31 +37,33 @@ function Profile() {
         setToggle(true)
     }
     useEffect(() => {
-        let unmounted = false;
-        setLoading(true)
-        firebase.getAds().then((res) => {
-            if (!unmounted) {
-                let fetched = []
-                for (let key in res.data) {
-                    fetched.unshift({
-                        id: key,
-                        ...res.data[key]
-                    })
-                }
-                setFollowedAds(fetched.filter(x => x.followingUsers.includes(user)))
-                setMyAds(fetched.filter(x => x.email === user))
+        if (user) {
+            setLoading(true)
+            async function getData() {
+                firebase.getAds().then((res) => {
+                    let fetched = []
+                    for (let key in res.data) {
+                        fetched.unshift({
+                            id: key,
+                            ...res.data[key]
+                        })
+                    }
+                    setFollowedAds(fetched.filter(x => x.followingUsers.includes(user)))
+                    setMyAds(fetched.filter(x => x.email === user))
+                    setLoading(false)
+                }).catch(() => {
+                    history.push(`/network-error`)
+                })
             }
-            setLoading(false)
-        }).catch(() => {
-            if (!unmounted) {
-                history.push(`/network-error`)
-            }
-        })
-        return () => unmounted = true;
-    }, [user, history, ads])
+            getData()
+        }else{
+            return
+        }
+
+    }, [user, history, ads, setUser])
 
     if (!user) {
-        history.push('/login')
+        return <Redirect to="/login" />
     }
 
     return (

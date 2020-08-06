@@ -23,7 +23,6 @@ function Login() {
                     setUser(localStorage.getItem('user'))
                     if (localStorage.getItem('prevPath') !== '') {
                         history.push(localStorage.getItem('prevPath'))
-
                         localStorage.setItem('prevPath', '')
                     } else {
                         history.push('/profile')
