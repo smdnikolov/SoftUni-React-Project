@@ -16,6 +16,7 @@ function Profile() {
     const [user, setUser] = useContext(UserContext)
     const [toast, setToast] = useContext(ToastContext)
     const [loading, setLoading] = useState(false)
+    const [flag, setFlag] = useState(true)
     const [toggle, setToggle] = useState(false)
     const [message, setMessage] = useState('')
     const [name, setName] = useState('')
@@ -23,9 +24,10 @@ function Profile() {
     async function logout() {
         try {
             firebase.logOut()
+            history.push('/login')
             setToast('loggedOut')
             localStorage.removeItem('logged')
-            history.push('/login')
+
         } catch (error) {
             console.log(error)
             history.push('/network-error')
@@ -45,11 +47,10 @@ function Profile() {
     }
 
     useEffect(() => {
-        setLoading(true)
-
+        let mount = true;
         firebase.auth.onAuthStateChanged((x) => {
             if (x) {
-                if (toast === 'logged' || toast === 'deleted') {
+                if ((toast === 'logged' || toast === 'deleted') && !flag) {
                     setTimeout(() => {
                         setToast('')
                     }, 2000)
@@ -57,31 +58,42 @@ function Profile() {
                 setUser(firebase.auth.currentUser.email)
                 setLoading(true)
                 firebase.getAds().then((res) => {
-                    let fetched = []
-                    for (let key in res.data) {
-                        fetched.unshift({
-                            id: key,
-                            ...res.data[key]
-                        })
+                    if (mount) {
+                        let fetched = []
+                        for (let key in res.data) {
+                            fetched.unshift({
+                                id: key,
+                                ...res.data[key]
+                            })
+                        }
+                        setFollowedAds(fetched.filter(x => x.followingUsers.includes(user)))
+                        setMyAds(fetched.filter(x => x.email === user))
+                        setLoading(false)
+                        setFlag(false)
                     }
-                    setFollowedAds(fetched.filter(x => x.followingUsers.includes(user)))
-                    setMyAds(fetched.filter(x => x.email === user))
-                    setLoading(false)
                 }).catch((err) => {
                     console.log(err)
                     history.push(`/network-error`)
                 })
+            } else {
+                setFlag(false)
             }
         });
+        if (!flag && localStorage.getItem('logged') !== 'yes') {
+            history.push('/login')
 
-    }, [user, history, ads, setUser, setToast, toast])
+        }
+        return () => mount = false
+
+    }, [user, history, ads, setUser, setToast, toast, flag])
 
     return (
         <div className="container search">
-            {loading
+            {flag
                 ? <div className="jumbotron"><h1>Loading</h1><Loader /></div>
                 : <div>
                     {toast === 'deleted' ? <SuccessAlert message='Ad closed sucessfully' /> : null}
+                    {toast === 'logged' ? <SuccessAlert message='Logged in sucessfully' /> : null}
                     <div className="row">
                         <div className="col">
                             <div className="jumbotron prof">

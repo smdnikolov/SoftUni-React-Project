@@ -12,21 +12,22 @@ function Login() {
     const [toast, setToast] = useContext(ToastContext)
     const [error, setError] = useState('')
 
-    function signUp(event) {
+   async function signUp(event) {
 
         event.preventDefault()
         const { email, password } = event.target.elements
         firebase.signUp(email.value, password.value).then(() => {
-            firebase.auth.onAuthStateChanged((res) => {
-                console.log(res)
+            firebase.auth.onAuthStateChanged(() => {
                 setLoading(true)
-                localStorage.setItem('logged', 'yes')
+
                 if (localStorage.getItem('prevPath')) {
                     setToast('logged')
                     history.push(`${localStorage.getItem('prevPath')}`)
                     localStorage.removeItem('prevPath')
                 } else {
                     history.push(`/profile`)
+                    setToast('logged')
+                    localStorage.setItem('logged', 'yes')
                 }
             })
         }).catch(e => {
@@ -34,6 +35,7 @@ function Login() {
             setError(e.message)
             setLoading(false)
         })
+
     }
     useEffect(() => {
         if (localStorage.getItem('logged') === 'yes') {
