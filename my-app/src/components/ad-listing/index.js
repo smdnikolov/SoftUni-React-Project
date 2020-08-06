@@ -53,7 +53,7 @@ function AdListing(props) {
         <div className="jumbotron">
             {ads.length
                 ? <div>
-                    <h1>All {props.name} Ads</h1>
+                    <h1>Browse {props.name} Ads</h1>
                     <div className="dropdown">
                         <p>Sorted By {sorting}</p>
                         <button className="btn btn-secondary dropdown-toggle shadow-none" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sort By</button>

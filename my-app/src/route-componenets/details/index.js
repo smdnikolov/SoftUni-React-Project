@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, } from 'react';
 import { useParams, useHistory, Link, useLocation } from 'react-router-dom'
 import firebase from '../../firebase'
 import Loader from '../../components/loader'
@@ -12,15 +12,42 @@ function Details() {
     const [ctgUrl, setCtgUrl] = useState(null)
     const user = localStorage.getItem('user')
     const history = useHistory()
+    const [flag, setFlag] = useState(false)
 
     const closeAd = (id) => {
         firebase.del(id).then(() => {
             history.push('/profile')
-        }).catch(() => history.push('/network-error'))
+        }).catch((err) => {
+            history.push('/network-error')
+            console.log(err)
+        })
     }
     const followAd = (id) => {
-        
+        let data = JSON.parse(JSON.stringify(ad));
+        data.followingUsers.push(user)
+        setFlag(true)
+        firebase.update(id, (id = data)).then((res) => {
+            setAd(data)
+            setFlag(false)
+        }).catch((err) => {
+            history.push('/network-error')
+            console.log(err)
+        })
     }
+    const forgetAd = (id) => {
+        let data = JSON.parse(JSON.stringify(ad));
+        const index = data.followingUsers.indexOf(user)
+        data.followingUsers.splice(index, 1)
+        setFlag(true)
+        firebase.update(id, (id = data)).then((res) => {
+            setAd(data)
+            setFlag(false)
+        }).catch((err) => {
+            history.push('/network-error')
+            console.log(err)
+        })
+    }
+
 
     useEffect(() => {
 
@@ -34,7 +61,7 @@ function Details() {
             }
         }).catch(() => history.push(`/network-error`))
 
-    }, [id, history])
+    }, [id, history,])
 
     return (
         <div>
@@ -73,12 +100,24 @@ function Details() {
                                     ? <div>
                                         {user === ad.email
                                             ? <div>
-                                                <button className="btn-primary shadow-none">Edit ✎</button>
+                                                <button onClick={()=>history.push('/post-ad')}className="btn-primary shadow-none">Edit ✎</button>
                                                 <button onClick={() => closeAd(id)} className="btn-primary shadow-none">Close 🗙</button>
                                             </div>
                                             : <div>
-                                                <button className="btn-primary shadow-none">Follow</button>
-                                                <button className="btn-primary shadow-none">Forget</button>
+                                                {ad.followingUsers.includes(user)
+                                                    ? <div>
+                                                        {flag
+                                                            ? <Loader />
+                                                            : <button onClick={() => forgetAd(id)} className="btn-primary shadow-none">Forget</button>
+                                                        }
+                                                    </div>
+                                                    : <div>
+                                                        {flag
+                                                            ? <Loader />
+                                                            : <button onClick={() => followAd(id)} className="btn-primary shadow-none">Follow</button>
+                                                        }
+                                                    </div>
+                                                }
                                             </div>
                                         }
                                     </div>

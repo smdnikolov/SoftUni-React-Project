@@ -16,6 +16,7 @@ function Profile() {
     const [loading, setLoading] = useState(false)
     const [toggle, setToggle] = useState(false)
     const [message, setMessage] = useState('')
+    const [name, setName] = useState('')
 
     function logout() {
         try {
@@ -29,9 +30,11 @@ function Profile() {
     function toggleSection(e) {
         if (e.target.textContent === 'My Ads') {
             setAds(myAds)
+            setName('My')
             setMessage('You have not posted any Ads yet')
         } else {
             setAds(myFollowedAds)
+            setName('Followed')
             setMessage('You have not followed any Ads yet')
         }
         setToggle(true)
@@ -56,7 +59,7 @@ function Profile() {
                 })
             }
             getData()
-        }else{
+        } else {
             return
         }
 
@@ -85,7 +88,7 @@ function Profile() {
                 {toggle
                     ? <div> {loading
                         ? <div className="jumbotron"><h1>Loading</h1><Loader /></div>
-                        : <AdsListing ads={ads} message={message} />}
+                        : <AdsListing ads={ads} name={name} message={message} />}
                     </div>
                     : null
                 }

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { UserContext } from '../../Store'
 import { Redirect, useHistory } from 'react-router-dom'
 import ErrorAlert from '../../components/error-alert'
@@ -39,6 +39,10 @@ function PostAd() {
             history.push(`/network-error`)
         })
     }
+
+    useEffect(() => {
+        window.scrollTo(0, 0)
+    })
 
     if (!user) {
         return <Redirect to='/login' />

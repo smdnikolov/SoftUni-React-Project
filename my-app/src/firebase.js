@@ -43,5 +43,8 @@ class Firebase {
     async del(id) {
         return axios.delete(`https://the-olm.firebaseio.com/ads/${id}.json`)
     }
+    async update(id, data) {
+        return axios.put(`https://the-olm.firebaseio.com/ads/${id}.json`, data)
+    }
 }
 export default new Firebase()

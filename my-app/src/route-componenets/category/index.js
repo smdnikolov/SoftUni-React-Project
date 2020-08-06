@@ -11,6 +11,7 @@ function Category() {
     const [loading, setLoading] = useState(true)
     const [message, setMessage] = useState('')
     const [ads, setAds] = useState([])
+    const [name, setName] = useState('')
     const urlEnd = useParams().name
     const category = categories.filter(x => x.link === urlEnd)[0]
 
@@ -28,16 +29,18 @@ function Category() {
                 }
                 fetchedData = fetchedData.filter(x => x.category.toLowerCase() === urlEnd)
                 setAds(fetchedData)
-                setMessage(`There are no Ads in ${urlEnd} yet`)
+                setMessage(`There are no Ads in ${category.name} yet`)
+                setName(category.name)
                 setLoading(false)
             }
-        }).catch(() => {
+        }).catch((err) => {
+            console.log(err)
             if (!unmounted) {
                 history.push(`/network-error`)
             }
         })
         return () => { unmounted = true };
-    }, [urlEnd, history])
+    }, [urlEnd, history, category.name])
 
     return (
         <div className="container search">
@@ -62,7 +65,7 @@ function Category() {
                     </div>
                     {loading
                         ? <div className="jumbotron"><h1>Loading</h1><Loader /></div>
-                        : <AdsListing ads={ads} message={message} />}
+                        : <AdsListing ads={ads} name={name} message={message} />}
                 </div>
             </div>
         </div>
