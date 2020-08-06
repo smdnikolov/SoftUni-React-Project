@@ -9,13 +9,14 @@ import Category from './route-componenets/category'
 import Details from './route-componenets/details'
 import Profile from './route-componenets/profile'
 import PostAd from './route-componenets/post-ad'
+import EditAd from './route-componenets/edit'
 import NotFound from './route-componenets/not-found'
 import NetworkError from './route-componenets/network-error'
 import './App.css';
 
 
-function Navigation() {
 
+function Navigation() {
     return (
         <BrowserRouter>
             <Header />
@@ -24,9 +25,10 @@ function Navigation() {
                 <Route path="/login" component={Login} />
                 <Route path="/register" component={Register} />
                 <Route path="/category/:name" component={Category} />
-                <Route path="/details/:id" exact component={Details} />
+                <Route path="/details/:id" component={Details} />
                 <Route path="/profile" component={Profile} />
                 <Route path="/post-ad" component={PostAd} />
+                <Route path="/edit/:id" component={EditAd} />
                 <Route path="/network-error" component={NetworkError} />
                 <Route path='*' exact component={NotFound} />
             </Switch>

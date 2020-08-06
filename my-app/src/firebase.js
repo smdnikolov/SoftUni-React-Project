@@ -19,7 +19,6 @@ class Firebase {
     constructor() {
         app.initializeApp(firebaseConfig);
         this.auth = app.auth()
-        this.db = app.database()
     }
     signUp(email, password) {
         return this.auth.signInWithEmailAndPassword(email, password)
@@ -28,7 +27,6 @@ class Firebase {
         return this.auth.createUserWithEmailAndPassword(email, password)
     }
     async logOut() {
-        localStorage.setItem('user', '')
         return this.auth.signOut()
     }
     async postAd(data) {

@@ -78,7 +78,7 @@ function AdListing(props) {
                                 : <div> <Link to="/post-ad" >Be the first to Post</Link></div>
                             }
                         </div>
-                        : <div> <Link to="/post-ad" >Post your first Ad</Link></div>
+                        : <div> <Link to="/post-ad" >Post an Ad</Link></div>
                     }
                 </div>
             }

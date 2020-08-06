@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { UserContext } from '../../Store'
+import { UserContext, ToastContext } from '../../Store'
 import { Redirect, useHistory } from 'react-router-dom'
 import ErrorAlert from '../../components/error-alert'
 import Loader from '../../components/loader'
@@ -8,6 +8,7 @@ import firebase from '../../firebase.js'
 
 function PostAd() {
     const [user,] = useContext(UserContext)
+    const [, setToast] = useContext(ToastContext)
     const [error,] = useState('')
     const [price, setPrice] = useState(0)
     const [loading, setLoading] = useState(false)
@@ -34,6 +35,7 @@ function PostAd() {
         setLoading(true)
         await firebase.postAd(ad).then((res) => {
             setLoading(false)
+            setToast('created')
             history.push(`/details/${res.data.name}`)
         }).catch(() => {
             history.push(`/network-error`)

@@ -32,10 +32,7 @@ opacity: 0.5;
 .cat li:hover  {
   transform: scale(1.1);
 }
-.search{
-margin-top:8rem;
 
-}
 a {
   color: #fff;
 }
@@ -46,7 +43,7 @@ a:hover{
 }
 .bg-dark {
   background-color: #000000bf!important;
-  margin-bottom: 180px;
+  margin-bottom: 75px;
 }
 .page-footer {
   width: 100%;
@@ -83,10 +80,7 @@ margin: 5px
 
 }
 .btn-primary:not(:disabled):not(.disabled).active, .btn-primary:not(:disabled):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
-  /* color: #fff; */
-  /* background-color: #0062cc; */
   border-color: #4e555b;
-  /* outline: none; */
 }
 
 .col-sm-8 {
@@ -140,8 +134,11 @@ margin: 5px
  color: #ffaa33;
   padding: 3rem!important;
   text-align: center!important;
-
+  margin-top: 75px;
   background-color: #000000bf;
+}
+.prof{
+  margin-top:75px
 }
 .mb-4{
   margin-bottom: 3rem!important;
@@ -167,6 +164,7 @@ margin: 5px
 }
 .jumbotron {
   padding: 3.7rem 2rem;
+  margin-top:65px;
   background-color: #000000bf;
   text-align: center;
   color: #ffaa33;
@@ -330,10 +328,21 @@ form .btn{
 .alert-danger {
   color: #721c24;
   background-color: #f8d7dacf;
-  top: -75px;
   display: inline-flex;
   border: 2px solid #721c24;
 }
 .ad-container h3{
   margin-top:50px
+}
+.alert-primary {
+  display: inline-flex;
+  border: 2px solid #2276d1;
+  color: #004085;
+  background-color: #cce5ffbf;
+}
+.alert-success {
+  display: inline-flex;
+  border: 2px solid #0d3f19;
+  color: #0d3f19;
+  background-color: #2f9246b8;
 }

@@ -17,29 +17,25 @@ function Category() {
 
 
     useEffect(() => {
-        let unmounted = false;
+
         firebase.getAds().then((res) => {
-            if (!unmounted) {
-                let fetchedData = []
-                for (let key in res.data) {
-                    fetchedData.unshift({
-                        id: key,
-                        ...res.data[key]
-                    })
-                }
-                fetchedData = fetchedData.filter(x => x.category.toLowerCase() === urlEnd)
-                setAds(fetchedData)
-                setMessage(`There are no Ads in ${category.name} yet`)
-                setName(category.name)
-                setLoading(false)
+            let fetchedData = []
+            for (let key in res.data) {
+                fetchedData.unshift({
+                    id: key,
+                    ...res.data[key]
+                })
             }
+            fetchedData = fetchedData.filter(x => x.category.toLowerCase() === urlEnd)
+            setAds(fetchedData)
+            setMessage(`There are no Ads in ${category.name} yet`)
+            setName(category.name)
+            setLoading(false)
         }).catch((err) => {
             console.log(err)
-            if (!unmounted) {
-                history.push(`/network-error`)
-            }
+            history.push(`/network-error`)
         })
-        return () => { unmounted = true };
+
     }, [urlEnd, history, category.name])
 
     return (

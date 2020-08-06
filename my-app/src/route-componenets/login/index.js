@@ -1,47 +1,61 @@
-import React, { useState, useContext } from 'react'
-import { Link, useHistory, Redirect } from 'react-router-dom'
-import { UserContext } from '../../Store'
+import React, { useState, useContext, useEffect } from 'react'
+import { Link, useHistory } from 'react-router-dom'
+import { ToastContext } from '../../Store'
 import firebase from '../../firebase'
 import Loader from '../../components/loader'
 import ErrorAlert from '../../components/error-alert'
+import SuccessAlert from '../../components/success-alert'
 
 function Login() {
     const history = useHistory()
     const [loading, setLoading] = useState(false)
-    const [user, setUser] = useContext(UserContext)
+    const [toast, setToast] = useContext(ToastContext)
     const [error, setError] = useState('')
 
-    async function signUp(event) {
+    function signUp(event) {
 
         event.preventDefault()
         const { email, password } = event.target.elements
-        await firebase.signUp(email.value, password.value).then(() => {
-            setLoading(true)
-            firebase.auth.onAuthStateChanged(() => {
-                if (firebase.auth.currentUser) {
-                    localStorage.setItem('user', `${firebase.auth.currentUser.email}`)
-                    setUser(localStorage.getItem('user'))
-                    if (localStorage.getItem('prevPath') !== '') {
-                        history.push(localStorage.getItem('prevPath'))
-                        localStorage.setItem('prevPath', '')
-                    } else {
-                        history.push('/profile')
-                    }
+        firebase.signUp(email.value, password.value).then(() => {
+            firebase.auth.onAuthStateChanged((res) => {
+                console.log(res)
+                setLoading(true)
+                localStorage.setItem('logged', 'yes')
+                if (localStorage.getItem('prevPath')) {
+                    setToast('logged')
+                    history.push(`${localStorage.getItem('prevPath')}`)
+                    localStorage.removeItem('prevPath')
+                } else {
+                    history.push(`/profile`)
                 }
             })
-        }).catch(err => {
-            console.log(err.message)
-            setError(err.message)
+        }).catch(e => {
+            console.log(e)
+            setError(e.message)
+            setLoading(false)
         })
     }
+    useEffect(() => {
+        if (localStorage.getItem('logged') === 'yes') {
+            setToast('logged')
+            return history.push('/')
+        }
+        if (error) {
+            setToast('')
+        }
+        if (toast === 'loggedOut') {
+            setTimeout(() => {
+                setToast('')
+            }, 2000)
+        }
+    }, [loading, setToast, toast, error, history])
 
-    if (user) {
-        return <Redirect to='/' />
-    }
+
 
     return (
         <div className="container">
             {error ? <ErrorAlert message={error} /> : null}
+            {toast ? <SuccessAlert message='Successfully logged out' /> : null}
             <div className="row">
                 <div className="col">
                     <form className="form" onSubmit={signUp} >

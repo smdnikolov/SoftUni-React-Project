@@ -1,18 +1,16 @@
-import React, { useContext, } from 'react';
-import { UserContext } from './Store'
+import React from 'react';
 import './App.css';
 import Navigation from './Navigation'
+import Store from './Store'
 
 function App() {
 
-  const [user, setUser] = useContext(UserContext)
-
   return (
-    <UserContext.Provider value={[user, setUser]}>
-      <div className="App">
+    <div className="App">
+      <Store>
         <Navigation />
-      </div>
-    </UserContext.Provider>
+      </Store>
+    </div>
 
   );
 }
