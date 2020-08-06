@@ -1,9 +1,21 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import ButtonLink from '../link-button'
 import logo from '../../utils/logo.png';
 import { Link } from 'react-router-dom'
+import firebase from '../../firebase'
 
 function Header(props) {
+
+    const [user, setUser] = useState({})
+    const authListener = () => {
+        firebase.auth.onAuthStateChanged((fbUser) => {
+            fbUser ? setUser(fbUser) : setUser(null)
+        })
+    }
+    useEffect(() => {
+        authListener()
+    })
+
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">
             <div className="container">
@@ -15,7 +27,7 @@ function Header(props) {
                     <span className="navbar-toggler-icon"></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarResponsive">
-                    {props.check === 'yes'
+                    {user
                         ? <ul className="navbar-nav ml-auto">
                             <li className="nav-item active">
                                 <ButtonLink link='/post-ad' name='Post Ad' />

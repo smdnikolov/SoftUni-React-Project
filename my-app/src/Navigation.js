@@ -19,7 +19,7 @@ import './App.css';
 function Navigation() {
     return (
         <BrowserRouter>
-            <Header  check={localStorage.getItem('logged')} />
+            <Header />
             <Switch>
                 <Route path="/" exact component={Home} />
                 <Route path="/login" component={Login} />

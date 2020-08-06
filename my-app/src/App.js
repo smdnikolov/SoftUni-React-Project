@@ -6,7 +6,7 @@ import Store from './Store'
 function App() {
 
   return (
-    <div onClick={() => console.log(localStorage.getItem('logged'))} className="App">
+    <div className="App">
       <Store>
         <Navigation />
       </Store>

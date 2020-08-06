@@ -4,7 +4,7 @@ import AdsListing from '../../components/ad-listing'
 import Loader from '../../components/loader'
 import firebase from '../../firebase.js'
 import { UserContext, ToastContext } from '../../Store'
-import { useHistory, } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import SuccessAlert from '../../components/success-alert'
 
 function Profile() {
@@ -21,43 +21,25 @@ function Profile() {
     const [message, setMessage] = useState('')
     const [name, setName] = useState('')
 
-    async function logout() {
-        try {
-            firebase.logOut()
-            history.push('/login')
-            setToast('loggedOut')
-            localStorage.removeItem('logged')
 
-        } catch (error) {
-            console.log(error)
-            history.push('/network-error')
+
+    useEffect(() => {
+
+        if ((toast === 'logged' || toast === 'deleted') && !flag) {
+            setTimeout(() => {
+                setToast('')
+            }, 2000)
         }
-    }
-    function toggleSection(e) {
-        if (e.target.textContent === 'My Ads') {
-            setAds(myAds)
-            setName('My')
-            setMessage('You have not posted any Ads yet')
-        } else {
-            setAds(myFollowedAds)
-            setName('Followed')
-            setMessage('You have not followed any Ads yet')
-        }
-        setToggle(true)
-    }
+    }, [setToast, toast, flag])
+
 
     useEffect(() => {
         let mount = true;
-        firebase.auth.onAuthStateChanged((x) => {
+        firebase.auth.onAuthStateChanged(async (x) => {
             if (x) {
-                if ((toast === 'logged' || toast === 'deleted') && !flag) {
-                    setTimeout(() => {
-                        setToast('')
-                    }, 2000)
-                }
                 setUser(firebase.auth.currentUser.email)
                 setLoading(true)
-                firebase.getAds().then((res) => {
+                await firebase.getAds().then((res) => {
                     if (mount) {
                         let fetched = []
                         for (let key in res.data) {
@@ -73,19 +55,39 @@ function Profile() {
                     }
                 }).catch((err) => {
                     console.log(err)
-                    history.push(`/network-error`)
                 })
             } else {
                 setFlag(false)
             }
         });
-        if (!flag && localStorage.getItem('logged') !== 'yes') {
-            history.push('/login')
+        return () => { mount = false }
+    }, [setUser, user, ads])
 
+
+    async function logout() {
+        debugger
+        try {
+            firebase.logOut()
+            setToast('loggedOut')
+            localStorage.clear()
+        } catch (error) {
+            console.log(error)
+            history.push('/network-error')
         }
-        return () => mount = false
-
-    }, [user, history, ads, setUser, setToast, toast, flag])
+        return
+    }
+    function toggleSection(e) {
+        if (e.target.textContent === 'My Ads') {
+            setAds(myAds)
+            setName('My')
+            setMessage('You have not posted any Ads yet')
+        } else {
+            setAds(myFollowedAds)
+            setName('Followed')
+            setMessage('You have not followed any Ads yet')
+        }
+        setToggle(true)
+    }
 
     return (
         <div className="container search">
@@ -102,7 +104,7 @@ function Profile() {
                                 <div className="profile">
                                     <button id="myAds" onClick={(e) => toggleSection(e)} className="btn-primary shadow-none">My Ads</button>
                                     <button id="followedAds" onClick={(e) => toggleSection(e)} className="btn-primary shadow-none">Followed Ads</button>
-                                    <button onClick={logout} className="btn-primary shadow-none">Logout</button>
+                                    <button onClick={() => logout(() => history.push('/login'))} className="btn-primary shadow-none">Logout</button>
                                 </div>
                             </div>
                         </div>
