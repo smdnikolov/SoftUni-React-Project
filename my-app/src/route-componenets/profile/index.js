@@ -3,7 +3,7 @@ import icon from '../../utils/portfolio.png'
 import AdsListing from '../../components/ad-listing'
 import Loader from '../../components/loader'
 import firebase from '../../firebase.js'
-import { ToastContext } from '../../Store'
+import { UserContext, ToastContext } from '../../Store'
 import { useHistory } from 'react-router-dom'
 import SuccessAlert from '../../components/success-alert'
 
@@ -14,25 +14,16 @@ function Profile() {
     const [myAds, setMyAds] = useState(null)
     const [myFollowedAds, setFollowedAds] = useState(null)
     const [toast, setToast] = useContext(ToastContext)
-    const [loading, setLoading] = useState(false)
+    const [user, setUser] = useContext(UserContext)
+    const [loading, setLoading] = useState(true)
     const [flag, setFlag] = useState(true)
     const [toggle, setToggle] = useState(false)
     const [message, setMessage] = useState('')
     const [name, setName] = useState('')
 
-
-
-    useEffect(() => {
-        if ((toast === 'logged' || toast === 'deleted') && !flag) {
-            setTimeout(() => {
-                setToast('')
-            }, 2000)
-        }
-    }, [setToast, toast, flag])
-
     useEffect(() => {
         let mount = true
-        if (firebase.auth.currentUser && !mount) {
+        if (user && !mount) {
             setToast('logged')
             return history.push('/')
         }
@@ -53,8 +44,8 @@ function Profile() {
                         ...res.data[key]
                     })
                 }
-                setFollowedAds(fetched.filter(x => x.followingUsers.includes(firebase.auth.currentUser.email)))
-                setMyAds(fetched.filter(x => x.email === firebase.auth.currentUser.email))
+                setFollowedAds(fetched.filter(x => x.followingUsers.includes(user)))
+                setMyAds(fetched.filter(x => x.email === user))
                 setLoading(false)
                 setFlag(false)
             }
@@ -63,11 +54,19 @@ function Profile() {
         })
         setFlag(false)
         return () => { mount = false }
-    }, [])
-
+    }, [user])
+    
+    useEffect(() => {
+        if ((toast === 'logged' || toast === 'deleted') && !flag) {
+            setTimeout(() => {
+                setToast('')
+            }, 2000)
+        }
+    }, [setToast, toast, flag])
 
     function logout() {
         firebase.auth.signOut()
+        setUser(null)
         setToast('loggedOut')
         history.push('/login')
     }
@@ -94,12 +93,12 @@ function Profile() {
                     <div className="row">
                         <div className="col">
                             <div className="jumbotron prof">
-                                <h1>{firebase.auth.currentUser.email}'s Profile:</h1>
+                                <h1>{user}'s Profile:</h1>
                                 <img src={icon} alt="" width="150px" />
                                 <div className="profile">
                                     <button id="myAds" onClick={(e) => toggleSection(e)} className="btn-primary shadow-none">My Ads</button>
                                     <button id="followedAds" onClick={(e) => toggleSection(e)} className="btn-primary shadow-none">Followed Ads</button>
-                                    <button onClick={() => logout(() => history.push('/login'))} className="btn-primary shadow-none">Logout</button>
+                                    <button onClick={logout} className="btn-primary shadow-none">Logout</button>
                                 </div>
                             </div>
                         </div>

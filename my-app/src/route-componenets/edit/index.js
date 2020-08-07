@@ -1,13 +1,13 @@
 import React, { useContext, useState, useEffect } from 'react'
 import { UserContext, ToastContext } from '../../Store'
-import { Redirect, useHistory, useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import ErrorAlert from '../../components/error-alert'
 import Loader from '../../components/loader'
 import firebase from '../../firebase.js'
 
 
-function EditAd() {
 
+function EditAd() {
     const [, setToast] = useContext(ToastContext)
     const [user,] = useContext(UserContext)
     const [error,] = useState('')
@@ -30,12 +30,26 @@ function EditAd() {
         })
     }
 
+    // useEffect(() => {
+    //     console.log(1)
+
+    //     firebase.auth.onAuthStateChanged((res) => {
+    //         if (res) {
+    //             setUser(firebase.auth.currentUser.email)
+    //         } else {
+    //             setUser(null)
+    //         }
+    //     })
+    // })
+
     useEffect(() => {
         window.scrollTo(0, 0)
+    }, [])
+    useEffect(() => {
         firebase.getAd(id).then((res) => {
             if (!res.data) {
                 history.push("/not-found");
-            } else if ((res.data.email !== user)) {
+            } else if (res.data.email !== user) {
                 setToast('noAuth')
                 history.push("/");
             } else {
@@ -49,9 +63,6 @@ function EditAd() {
         })
     }, [history, id, user, setToast])
 
-    if (!user) {
-        return <Redirect to='/login' />
-    }
     return (
         <div className="container">
             {error ? <ErrorAlert message={error} /> : null}

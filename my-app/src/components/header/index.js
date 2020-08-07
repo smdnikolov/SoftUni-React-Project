@@ -1,20 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import React, { useContext } from 'react'
 import ButtonLink from '../link-button'
 import logo from '../../utils/logo.png';
 import { Link } from 'react-router-dom'
-import firebase from '../../firebase'
+import { UserContext } from '../../Store';
 
-function Header(props) {
+function Header() {
 
-    const [user, setUser] = useState({})
-    const authListener = () => {
-        firebase.auth.onAuthStateChanged((fbUser) => {
-            fbUser ? setUser(fbUser) : setUser(null)
-        })
-    }
-    useEffect(() => {
-        authListener()
-    })
+    const [user,] = useContext(UserContext)
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark static-top">

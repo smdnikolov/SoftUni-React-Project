@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
-import { ToastContext } from '../../Store'
+import { ToastContext, UserContext } from '../../Store'
 import firebase from '../../firebase'
 import Loader from '../../components/loader'
 import ErrorAlert from '../../components/error-alert'
@@ -10,21 +10,27 @@ function Login() {
     const history = useHistory()
     const [loading, setLoading] = useState(false)
     const [toast, setToast] = useContext(ToastContext)
+    const [user, setUser] = useContext(UserContext)
     const [error, setError] = useState('')
 
-    function signUp(event) {
+    async function signUp(event) {
+        setLoading(true)
         event.preventDefault()
         const { email, password } = event.target.elements
-        firebase.auth.signInWithEmailAndPassword(email.value, password.value).then(() => {
-            setLoading(true)
+        await firebase.auth.signInWithEmailAndPassword(email.value, password.value).then((res) => {
+
+            setUser(email.value)
             if (localStorage.getItem('prevPath')) {
                 setToast('logged')
                 history.push(`${localStorage.getItem('prevPath')}`)
-                localStorage.removeItem('prevPath')
+                setTimeout(() => {
+                    localStorage.removeItem('prevPath')
+                }, 500)
             } else {
                 history.push(`/profile`)
                 setToast('logged')
             }
+            setLoading(false)
         }).catch(e => {
             console.log(e)
             setError(e.message)
@@ -33,7 +39,7 @@ function Login() {
     }
 
     useEffect(() => {
-        let mount = true
+
         if (error) {
             setToast('')
         }
@@ -42,12 +48,12 @@ function Login() {
                 setToast('')
             }, 2000)
         }
-        if (firebase.auth.currentUser && mount) {
-            setToast('logged')
-            return history.push('/')
-        }
-        return () => mount = false
-    }, [history, setToast, error, toast])
+        // if (user) {
+        //     setToast('logged')
+        //     console.log(1)
+        //     history.push('/')
+        // }
+    }, [history, setToast, error, toast, user])
 
     return (
         <div className="container">

@@ -1,13 +1,15 @@
-import React, { useState, } from 'react'
+import React, { useState,  } from 'react'
+
 
 export const UserContext = React.createContext(null)
 export const ToastContext = React.createContext(null)
 
 
+
 const Store = ({ children }) => {
 
     const [user, setUser] = useState(null)
-    const [toast, setToast] = useState('')
+    const [toast, setToast] = useState(null)
 
     return (
         <UserContext.Provider value={[user, setUser]}>
