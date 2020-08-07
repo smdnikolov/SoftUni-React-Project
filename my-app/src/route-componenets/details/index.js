@@ -48,6 +48,7 @@ function Details() {
     useEffect(() => {
         if (!loading) {
             if (toast === 'edited' || toast === 'created' || toast === 'logged') {
+                localStorage.removeItem('prevPath')
                 setTimeout(() => {
                     setToast('')
                 }, 2000)
@@ -55,7 +56,6 @@ function Details() {
             setFlag(false)
         }
     }, [setToast, loading, toast])
-
 
     const closeAd = async (id) => {
         await firebase.del(id).then(() => {
@@ -93,7 +93,7 @@ function Details() {
     }
 
     return (
-        <div onClick={() => console.log(ad, user)}>
+        <div >
             {loading
                 ? <div className="container jumbotron">
                     <h1>Loading</h1>
@@ -165,7 +165,7 @@ function Details() {
                                                 </div>
                                             }
                                         </div>
-                                        : <Link onClick={() => localStorage.setItem('prevPath', path)} to='/login'>Login to Follow</Link>
+                                        : <Link onClick={() => localStorage.setItem('prevPath', path)} to='/login'>Login for More</Link>
                                     }
                                 </div>
                             </div>

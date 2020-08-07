@@ -21,16 +21,16 @@ function Profile() {
     const [message, setMessage] = useState('')
     const [name, setName] = useState('')
 
-    useEffect(() => {
-        let mount = true
-        if (user && !mount) {
-            setToast('logged')
-            return history.push('/')
-        }
-        return () => {
-            mount = false
-        }
-    })
+    // useEffect(() => {
+    //     let mount = true
+    //     if (user && !mount) {
+    //         setToast('logged')
+    //         return history.push('/')
+    //     }
+    //     return () => {
+    //         mount = false
+    //     }
+    // })
 
     useEffect(() => {
         let mount = true;

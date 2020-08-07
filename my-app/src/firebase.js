@@ -20,12 +20,6 @@ class Firebase {
         app.initializeApp(firebaseConfig);
         this.auth = app.auth()
     }
-    // signUp(email, password) {
-    //     return this.auth.signInWithEmailAndPassword(email, password)
-    // }
-    // register(email, password) {
-    //     return this.auth.createUserWithEmailAndPassword(email, password)
-    // }
     async logOut() {
         return this.auth.signOut()
     }

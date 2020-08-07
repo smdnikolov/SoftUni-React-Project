@@ -12,6 +12,7 @@ function Login() {
     const [toast, setToast] = useContext(ToastContext)
     const [user, setUser] = useContext(UserContext)
     const [error, setError] = useState('')
+    const [flag, setFlag] = useState(null)
 
     async function signUp(event) {
         setLoading(true)
@@ -22,12 +23,9 @@ function Login() {
             setUser(email.value)
             if (localStorage.getItem('prevPath')) {
                 setToast('logged')
-                history.push(`${localStorage.getItem('prevPath')}`)
-                setTimeout(() => {
-                    localStorage.removeItem('prevPath')
-                }, 500)
+                setFlag(`${localStorage.getItem('prevPath')}`)
             } else {
-                history.push(`/profile`)
+                setFlag('/profile')
                 setToast('logged')
             }
             setLoading(false)
@@ -39,6 +37,9 @@ function Login() {
     }
 
     useEffect(() => {
+        if (flag) {
+            history.push(flag)
+        }
 
         if (error) {
             setToast('')
@@ -48,17 +49,12 @@ function Login() {
                 setToast('')
             }, 2000)
         }
-        // if (user) {
-        //     setToast('logged')
-        //     console.log(1)
-        //     history.push('/')
-        // }
-    }, [history, setToast, error, toast, user])
+    }, [history, setToast, error, toast, user, flag])
 
     return (
         <div className="container">
             {error ? <ErrorAlert message={error} /> : null}
-            {toast ? <SuccessAlert message='Successfully logged out' /> : null}
+            {toast && flag === null ? <SuccessAlert message='Successfully logged out' /> : null}
             <div className="row">
                 <div className="col">
                     <form className="form" onSubmit={signUp} >
