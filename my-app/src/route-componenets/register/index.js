@@ -79,12 +79,12 @@ function Register() {
     const [loading, setLoading] = useState(false)
     const history = useHistory()
 
-    async function register(event) {
+    function register(event) {
         event.preventDefault()
         const { email, password, rePassword } = event.target.elements
         if (rePassword.value === password.value) {
             setLoading(true)
-            await firebase.register(email.value, password.value).then(() => {
+            firebase.auth.createUserWithEmailAndPassword(email.value, password.value).then(() => {
                 localStorage.setItem('logged', 'yes')
                 setToast('logged')
                 history.push('/profile')
@@ -97,14 +97,16 @@ function Register() {
         } else {
             setError('The passwords must match!')
         }
-        
+
     }
     useEffect(() => {
-        if (localStorage.getItem('logged') === 'yes') {
+        let mount = true
+        if (firebase.auth.currentUser && mount) {
             setToast('logged')
             history.push('/')
         }
-    }, [history,setToast])
+        return () => mount = false
+    }, [history, setToast])
 
     return (
         <div className="container">

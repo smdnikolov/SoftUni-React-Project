@@ -3,7 +3,7 @@ import { useParams, useHistory, Link, useLocation } from 'react-router-dom'
 import firebase from '../../firebase'
 import Loader from '../../components/loader'
 import categories from '../../utils/categories'
-import { ToastContext, UserContext } from '../../Store'
+import { ToastContext } from '../../Store'
 import InfoAlert from '../../components/info-alert'
 import SuccessAlert from '../../components/success-alert'
 
@@ -13,7 +13,7 @@ function Details() {
     const [loading, setLoading] = useState(true)
     const [ad, setAd] = useState(null)
     const [ctgUrl, setCtgUrl] = useState(null)
-    const [user,] = useContext(UserContext)
+    const [user, setUser] = useState('')
     const [toast, setToast] = useContext(ToastContext)
     const history = useHistory()
     const [flag, setFlag] = useState(false)
@@ -27,6 +27,7 @@ function Details() {
             console.log(err)
         })
     }
+
     const followAd = (id) => {
         let data = JSON.parse(JSON.stringify(ad));
         data.followingUsers.push(user)
@@ -46,7 +47,7 @@ function Details() {
         setFlag(true)
         firebase.update(id, (id = data)).then((res) => {
             setAd(data)
-            setFlag(false)
+
         }).catch((err) => {
             history.push('/network-error')
             console.log(err)
@@ -54,41 +55,60 @@ function Details() {
     }
 
 
+    useEffect(() => {
+        let mount = true
+        firebase.auth.currentUser ? setUser(firebase.auth.currentUser.email) : setUser(null)
+        if (mount) {
+
+            firebase.getAd(id).then((res) => {
+
+                if (!res.data) {
+                    setToast('notFound')
+                    history.replace("/");
+                } else {
+                    console.log(res.data)
+                    setCtgUrl(categories.filter(x => x.name === res.data.category)[0].url)
+
+                    
+                    setLoading(false)
+                }
+                setAd({ ...res.data })
+                console.log(ad)
+            }).catch((err) => {
+                console.log(err)
+                history.push(`/network-error`)
+            })
+
+
+        }
+        return () => mount = false
+    }, [setUser, history, id, setToast])
 
     useEffect(() => {
-        if (!loading) {
-            if (toast === 'edited') {
-                setTimeout(() => {
-                    setToast('')
-                }, 2000)
-            } else if (toast === 'created') {
-                setTimeout(() => {
-                    setToast('')
-                }, 2000)
-            }
-            else if (toast === 'logged') {
-                setTimeout(() => {
-                    setToast('')
-                }, 2000)
-            }
+        let mount = true
+        if (mount) {
+
+            setLoading(false)
         }
+        return () => mount = false
+    }, [setUser])
 
-        firebase.getAd(id).then((res) => {
-            if (!res.data) {
-                setToast('notFound')
-                history.replace("/");
-            } else {
-                setCtgUrl(categories.filter(x => x.name === res.data.category)[0].url)
-                setAd(res.data)
-                setLoading(false)
+
+    useEffect(() => {
+
+        if (!loading) {
+            if (toast === 'edited' || toast === 'created' || toast === 'logged') {
+                setTimeout(() => {
+                    setToast('')
+                }, 2000)
             }
-        }).catch(() => history.push(`/network-error`))
+            setFlag(false)
 
+        }
     }, [id, history, toast, setToast, loading, user])
 
     return (
         <div>
-
             {loading
                 ? <div className="container jumbotron">
                     <h1>Loading</h1>
@@ -110,7 +130,7 @@ function Details() {
                         }
                     </div>
                     <div className="container jumbotron det">
-                        <h1>{ad.title}</h1>
+                        {/* <h1>{ad.title}</h1>
                         <div className="row">
                             <div className="col">
                                 <div>
@@ -164,7 +184,7 @@ function Details() {
                                     }
                                 </div>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
             }

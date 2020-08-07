@@ -3,7 +3,7 @@ import icon from '../../utils/portfolio.png'
 import AdsListing from '../../components/ad-listing'
 import Loader from '../../components/loader'
 import firebase from '../../firebase.js'
-import { UserContext, ToastContext } from '../../Store'
+import { ToastContext } from '../../Store'
 import { useHistory } from 'react-router-dom'
 import SuccessAlert from '../../components/success-alert'
 
@@ -13,7 +13,6 @@ function Profile() {
     const [ads, setAds] = useState(null)
     const [myAds, setMyAds] = useState(null)
     const [myFollowedAds, setFollowedAds] = useState(null)
-    const [user, setUser] = useContext(UserContext)
     const [toast, setToast] = useContext(ToastContext)
     const [loading, setLoading] = useState(false)
     const [flag, setFlag] = useState(true)
@@ -24,7 +23,6 @@ function Profile() {
 
 
     useEffect(() => {
-
         if ((toast === 'logged' || toast === 'deleted') && !flag) {
             setTimeout(() => {
                 setToast('')
@@ -32,49 +30,46 @@ function Profile() {
         }
     }, [setToast, toast, flag])
 
+    useEffect(() => {
+        let mount = true
+        if (firebase.auth.currentUser && !mount) {
+            setToast('logged')
+            return history.push('/')
+        }
+        return () => {
+            mount = false
+        }
+    })
 
     useEffect(() => {
         let mount = true;
-        firebase.auth.onAuthStateChanged(async (x) => {
-            if (x) {
-                setUser(firebase.auth.currentUser.email)
-                setLoading(true)
-                await firebase.getAds().then((res) => {
-                    if (mount) {
-                        let fetched = []
-                        for (let key in res.data) {
-                            fetched.unshift({
-                                id: key,
-                                ...res.data[key]
-                            })
-                        }
-                        setFollowedAds(fetched.filter(x => x.followingUsers.includes(user)))
-                        setMyAds(fetched.filter(x => x.email === user))
-                        setLoading(false)
-                        setFlag(false)
-                    }
-                }).catch((err) => {
-                    console.log(err)
-                })
-            } else {
+        setLoading(true)
+        firebase.getAds().then((res) => {
+            if (mount) {
+                let fetched = []
+                for (let key in res.data) {
+                    fetched.unshift({
+                        id: key,
+                        ...res.data[key]
+                    })
+                }
+                setFollowedAds(fetched.filter(x => x.followingUsers.includes(firebase.auth.currentUser.email)))
+                setMyAds(fetched.filter(x => x.email === firebase.auth.currentUser.email))
+                setLoading(false)
                 setFlag(false)
             }
-        });
+        }).catch((err) => {
+            console.log(err)
+        })
+        setFlag(false)
         return () => { mount = false }
-    }, [setUser, user, ads])
+    }, [])
 
 
-    async function logout() {
-        debugger
-        try {
-            firebase.logOut()
-            setToast('loggedOut')
-            localStorage.clear()
-        } catch (error) {
-            console.log(error)
-            history.push('/network-error')
-        }
-        return
+    function logout() {
+        firebase.auth.signOut()
+        setToast('loggedOut')
+        history.push('/login')
     }
     function toggleSection(e) {
         if (e.target.textContent === 'My Ads') {
@@ -99,7 +94,7 @@ function Profile() {
                     <div className="row">
                         <div className="col">
                             <div className="jumbotron prof">
-                                <h1>{user}'s Profile:</h1>
+                                <h1>{firebase.auth.currentUser.email}'s Profile:</h1>
                                 <img src={icon} alt="" width="150px" />
                                 <div className="profile">
                                     <button id="myAds" onClick={(e) => toggleSection(e)} className="btn-primary shadow-none">My Ads</button>

@@ -12,36 +12,28 @@ function Login() {
     const [toast, setToast] = useContext(ToastContext)
     const [error, setError] = useState('')
 
-   async function signUp(event) {
-
+    function signUp(event) {
         event.preventDefault()
         const { email, password } = event.target.elements
-        firebase.signUp(email.value, password.value).then(() => {
-            firebase.auth.onAuthStateChanged(() => {
-                setLoading(true)
-
-                if (localStorage.getItem('prevPath')) {
-                    setToast('logged')
-                    history.push(`${localStorage.getItem('prevPath')}`)
-                    localStorage.removeItem('prevPath')
-                } else {
-                    history.push(`/profile`)
-                    setToast('logged')
-                    localStorage.setItem('logged', 'yes')
-                }
-            })
+        firebase.auth.signInWithEmailAndPassword(email.value, password.value).then(() => {
+            setLoading(true)
+            if (localStorage.getItem('prevPath')) {
+                setToast('logged')
+                history.push(`${localStorage.getItem('prevPath')}`)
+                localStorage.removeItem('prevPath')
+            } else {
+                history.push(`/profile`)
+                setToast('logged')
+            }
         }).catch(e => {
             console.log(e)
             setError(e.message)
             setLoading(false)
         })
-
     }
+
     useEffect(() => {
-        if (localStorage.getItem('logged') === 'yes') {
-            setToast('logged')
-            return history.push('/')
-        }
+        let mount = true
         if (error) {
             setToast('')
         }
@@ -50,9 +42,12 @@ function Login() {
                 setToast('')
             }, 2000)
         }
-    }, [loading, setToast, toast, error, history])
-
-
+        if (firebase.auth.currentUser && mount) {
+            setToast('logged')
+            return history.push('/')
+        }
+        return () => mount = false
+    }, [history, setToast, error, toast])
 
     return (
         <div className="container">

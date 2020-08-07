@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { UserContext, ToastContext } from '../../Store'
+import { ToastContext } from '../../Store'
 import { Redirect, useHistory } from 'react-router-dom'
 import ErrorAlert from '../../components/error-alert'
 import Loader from '../../components/loader'
@@ -7,12 +7,12 @@ import firebase from '../../firebase.js'
 
 
 function PostAd() {
-    const [user,] = useContext(UserContext)
     const [, setToast] = useContext(ToastContext)
     const [error,] = useState('')
     const [price, setPrice] = useState(0)
     const [loading, setLoading] = useState(false)
     const history = useHistory()
+
     function getCurrentDate() {
         const date = new Date()
         const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1
@@ -24,29 +24,30 @@ function PostAd() {
         return `${day}/${month}/${year} - ${hours}:${mins}`
     }
 
-    async function submitAd(e) {
+    function submitAd(e) {
         e.preventDefault()
         const { title, phoneNumber, city, price, category, condition, description, imageUrl } = e.target.elements
         const date = getCurrentDate()
         const followingUsers = ['тест']
         const ad = {
-            email: user, title: title.value, phoneNUmber: phoneNumber.value, imageUrl: imageUrl.value, city: city.value, price: price.value, condition: condition.value, category: category.value, description: description.value, date, followingUsers
+            email: firebase.auth.currentUser.email, title: title.value, phoneNUmber: phoneNumber.value, imageUrl: imageUrl.value, city: city.value, price: price.value, condition: condition.value, category: category.value, description: description.value, date, followingUsers
         }
         setLoading(true)
-        await firebase.postAd(ad).then((res) => {
+        firebase.postAd(ad).then((res) => {
             setLoading(false)
             setToast('created')
             history.push(`/details/${res.data.name}`)
-        }).catch(() => {
+        }).catch((err) => {
+            console.log(err)
             history.push(`/network-error`)
         })
     }
 
     useEffect(() => {
         window.scrollTo(0, 0)
-    })
+    }, [])
 
-    if (!user) {
+    if (!firebase.auth.currentUser) {
         return <Redirect to='/login' />
     }
     return (
