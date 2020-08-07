@@ -4,6 +4,8 @@ import Router from './router/Router'
 import Store from './Store'
 import Header from './components/header'
 import Footer from './components/footer'
+import { ToastContainer, Flip } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
@@ -11,6 +13,7 @@ function App() {
     <div className="App">
       <Store>
         <Header />
+        <ToastContainer transition={Flip} autoClose={4000} hideProgressBar={true} closeOnClick />
         <Router />
         <Footer />
       </Store>

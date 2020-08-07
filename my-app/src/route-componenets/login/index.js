@@ -1,60 +1,38 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext } from 'react'
 import { Link, useHistory } from 'react-router-dom'
-import { ToastContext, UserContext } from '../../Store'
+import { UserContext } from '../../Store'
 import firebase from '../../firebase'
 import Loader from '../../components/loader'
-import ErrorAlert from '../../components/error-alert'
-import SuccessAlert from '../../components/success-alert'
+import { toast } from 'react-toastify'
 
 function Login() {
     const history = useHistory()
     const [loading, setLoading] = useState(false)
-    const [toast, setToast] = useContext(ToastContext)
-    const [user, setUser] = useContext(UserContext)
-    const [error, setError] = useState('')
-    const [flag, setFlag] = useState(null)
+    const [, setUser] = useContext(UserContext)
 
-    async function signUp(event) {
-        setLoading(true)
+
+    function signUp(event) {
+
         event.preventDefault()
         const { email, password } = event.target.elements
-        await firebase.auth.signInWithEmailAndPassword(email.value, password.value).then((res) => {
-
-            setUser(email.value)
-            if (localStorage.getItem('prevPath')) {
-                setToast('logged')
-                setFlag(`${localStorage.getItem('prevPath')}`)
-            } else {
-                setFlag('/profile')
-                setToast('logged')
-            }
-            setLoading(false)
-        }).catch(e => {
-            console.log(e)
-            setError(e.message)
-            setLoading(false)
-        })
+        if (email.value && password.value) {
+            firebase.auth.signInWithEmailAndPassword(email.value, password.value).then((res) => {
+                toast.success('Sucessfully logged in')
+                setLoading(true)
+                setUser(email.value)
+                localStorage.getItem('prevPath') ? history.push(`${localStorage.getItem('prevPath')}`) : history.push('/profile')
+            }).catch(err => {
+                console.log(err)
+                toast.error(`${err.message}`)
+                setLoading(false)
+            })
+        } else {
+            toast.error('Please fill the form')
+        }
     }
-
-    useEffect(() => {
-        if (flag) {
-            history.push(flag)
-        }
-
-        if (error) {
-            setToast('')
-        }
-        if (toast === 'loggedOut') {
-            setTimeout(() => {
-                setToast('')
-            }, 2000)
-        }
-    }, [history, setToast, error, toast, user, flag])
 
     return (
         <div className="container">
-            {error ? <ErrorAlert message={error} /> : null}
-            {toast && flag === null ? <SuccessAlert message='Successfully logged out' /> : null}
             <div className="row">
                 <div className="col">
                     <form className="form" onSubmit={signUp} >

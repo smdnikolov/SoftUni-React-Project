@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import notFoundImg from '../../utils/networkError.png'
 
@@ -10,6 +10,7 @@ function NetworkError() {
     let styles = {
         margin: '50px',
     };
+    useEffect(() => { localStorage.removeItem('prevPath') })
     return (
         <div className="container jumbotron err">
             <button className="btn btn-primary shadow-none" style={styles} onClick={() => history.push('/')}>Take Me Home</button>

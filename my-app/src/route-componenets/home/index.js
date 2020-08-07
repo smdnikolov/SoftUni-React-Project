@@ -1,36 +1,15 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import BrowseCategories from '../../components/browse-categories'
-import { ToastContext } from '../../Store'
-import ErrorAlert from '../../components/error-alert'
-import InfoAlert from '../../components/info-alert'
+
+
 
 
 function Home() {
-
-    const [toast, setToast] = useContext(ToastContext)
-
-    useEffect(() => {
-        if (toast === 'noAuth' || toast === 'notFound' || toast === 'logged') {
-            setTimeout(() => {
-                setToast('')
-            }, 2000)
-        }
-    }, [toast, setToast])
+    
+    useEffect(() => { localStorage.removeItem('prevPath') })
 
     return (
         <div className="container search">
-            {toast === 'noAuth'
-                ? <ErrorAlert message="You have no permission to edit this Ad" />
-                : null
-            }
-            {toast === 'notFound'
-                ? <ErrorAlert message="There is no such Ad or it has already been closed" />
-                : null
-            }
-            {toast === 'logged'
-                ? <InfoAlert message="You are already logged in" />
-                : null
-            }
             <div className="row">
                 <div className="col">
                     <div className="jumbotron">

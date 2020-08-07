@@ -325,24 +325,7 @@ form .btn{
 .err a{
   margin-bottom:50px
 }
-.alert-danger {
-  color: #721c24;
-  background-color: #f8d7dacf;
-  display: inline-flex;
-  border: 2px solid #721c24;
-}
 .ad-container h3{
   margin-top:50px
 }
-.alert-primary {
-  display: inline-flex;
-  border: 2px solid #2276d1;
-  color: #004085;
-  background-color: #cce5ffbf;
-}
-.alert-success {
-  display: inline-flex;
-  border: 2px solid #0d3f19;
-  color: #0d3f19;
-  background-color: #2f9246b8;
-}
+

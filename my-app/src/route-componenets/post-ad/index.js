@@ -1,14 +1,12 @@
-import React, { useContext, useState, useEffect } from 'react'
-import { ToastContext } from '../../Store'
-import { Redirect, useHistory } from 'react-router-dom'
-import ErrorAlert from '../../components/error-alert'
+import React, { useState, useEffect } from 'react'
+import { useHistory } from 'react-router-dom'
 import Loader from '../../components/loader'
 import firebase from '../../firebase.js'
+import { toast } from 'react-toastify'
 
 
 function PostAd() {
-    const [, setToast] = useContext(ToastContext)
-    const [error,] = useState('')
+
     const [price, setPrice] = useState(0)
     const [loading, setLoading] = useState(false)
     const history = useHistory()
@@ -20,7 +18,6 @@ function PostAd() {
         const hours = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours()
         const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()
         const year = date.getFullYear()
-
         return `${day}/${month}/${year} - ${hours}:${mins}`
     }
 
@@ -35,24 +32,21 @@ function PostAd() {
         setLoading(true)
         firebase.postAd(ad).then((res) => {
             setLoading(false)
-            setToast('created')
+            toast.success("Ad posted successfully")
             history.push(`/details/${res.data.name}`)
-        }).catch((err) => {
+        }).catch(err => {
             console.log(err)
-            history.push(`/network-error`)
+            toast.error(err.message)
+            history.push('/network-error')
         })
     }
-
     useEffect(() => {
+        localStorage.removeItem('prevPath')
         window.scrollTo(0, 0)
     }, [])
 
-    if (!firebase.auth.currentUser) {
-        return <Redirect to='/login' />
-    }
     return (
         <div className="container">
-            {error ? <ErrorAlert message={error} /> : null}
             <div className="row">
                 <div className="col">
                     <form className="form" onSubmit={submitAd}>

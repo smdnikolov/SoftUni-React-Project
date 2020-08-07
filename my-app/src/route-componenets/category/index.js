@@ -17,7 +17,7 @@ function Category() {
 
 
     useEffect(() => {
-
+        localStorage.removeItem('prevPath')
         firebase.getAds().then((res) => {
             let fetchedData = []
             for (let key in res.data) {
@@ -36,7 +36,7 @@ function Category() {
             history.push(`/network-error`)
         })
 
-    }, [urlEnd, history, category.name])
+    }, [urlEnd, history, category])
 
     return (
         <div className="container search">

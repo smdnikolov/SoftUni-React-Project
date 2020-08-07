@@ -3,9 +3,8 @@ import { useParams, useHistory, Link, useLocation } from 'react-router-dom'
 import firebase from '../../firebase'
 import Loader from '../../components/loader'
 import categories from '../../utils/categories'
-import { UserContext, ToastContext } from '../../Store'
-import InfoAlert from '../../components/info-alert'
-import SuccessAlert from '../../components/success-alert'
+import { UserContext } from '../../Store'
+import { toast } from 'react-toastify'
 
 function Details() {
     const path = useLocation().pathname
@@ -14,12 +13,11 @@ function Details() {
     const [ad, setAd] = useState({})
     const [ctgUrl, setCtgUrl] = useState(null)
     const [user,] = useContext(UserContext)
-    const [toast, setToast] = useContext(ToastContext)
     const history = useHistory()
     const [flag, setFlag] = useState(false)
 
-
     useEffect(() => {
+        localStorage.removeItem('prevPath')
         let mounted = true
         if (mounted) {
             (async function asd() {
@@ -30,12 +28,13 @@ function Details() {
                             setCtgUrl(categories.filter(x => x.name === res.data.category)[0].url)
                             setLoading(false)
                         } else {
-                            setToast('notFound')
-                            history.push('/')
+                            toast.error('There is no such Ad')
+                            history.push('/not-found')
                         }
                     })
                     .catch(err => {
                         console.log(err)
+                        toast.error(err.message)
                         history.push('/network-error')
                     })
             })()
@@ -43,27 +42,16 @@ function Details() {
         return () => {
             mounted = false
         }
-    }, [history, id, setToast])
-
-    useEffect(() => {
-        if (!loading) {
-            if (toast === 'edited' || toast === 'created' || toast === 'logged') {
-                localStorage.removeItem('prevPath')
-                setTimeout(() => {
-                    setToast('')
-                }, 2000)
-            }
-            setFlag(false)
-        }
-    }, [setToast, loading, toast])
+    }, [history, id])
 
     const closeAd = async (id) => {
         await firebase.del(id).then(() => {
-            setToast('deleted')
+            toast.info('Ad deleted successfully')
             history.push('/profile')
-        }).catch((err) => {
-            history.push('/network-error')
+        }).catch(err => {
             console.log(err)
+            toast.error(err.message)
+            history.push('/network-error')
         })
     }
     const followAd = (id) => {
@@ -73,9 +61,10 @@ function Details() {
         firebase.update(id, (id = data)).then((res) => {
             setAd(data)
             setFlag(false)
-        }).catch((err) => {
-            history.push('/network-error')
+        }).catch(err => {
             console.log(err)
+            toast.error(err.message)
+            history.push('/network-error')
         })
     }
     const forgetAd = (id) => {
@@ -86,9 +75,10 @@ function Details() {
         firebase.update(id, (id = data)).then((res) => {
             setAd(data)
             setFlag(false)
-        }).catch((err) => {
-            history.push('/network-error')
+        }).catch(err => {
             console.log(err)
+            toast.error(err.message)
+            history.push('/network-error')
         })
     }
 
@@ -100,20 +90,6 @@ function Details() {
                     <Loader />
                 </div>
                 : <div>
-                    <div>
-                        {toast === 'edited'
-                            ? <InfoAlert message="Ad successfully edited" />
-                            : null
-                        }
-                        {toast === 'created'
-                            ? <SuccessAlert message="Ad successfully created" />
-                            : null
-                        }
-                        {toast === 'logged'
-                            ? <SuccessAlert message="Successfully logged in" />
-                            : null
-                        }
-                    </div>
                     <div className="container jumbotron det">
                         <h1>{ad.title}</h1>
                         <div className="row">

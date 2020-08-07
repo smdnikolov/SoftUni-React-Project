@@ -1,21 +1,26 @@
-import React, { useState,  } from 'react'
-
-
-export const UserContext = React.createContext(null)
-export const ToastContext = React.createContext(null)
-
-
+import React, { useState, useEffect, } from 'react'
+import firebase from './firebase'
+export const UserContext = React.createContext(atob(localStorage.getItem('Zx1%sa3@R--26Z')))
 
 const Store = ({ children }) => {
+    const [user, setUser] = useState(atob(localStorage.getItem('Zx1%sa3@R--26Z')))
 
-    const [user, setUser] = useState(null)
-    const [toast, setToast] = useState(null)
+    useEffect(() => {
+        (() => {
+            firebase.auth.onAuthStateChanged((res) => {
+                if (res) {
+                    localStorage.setItem(`Zx1%sa3@R--26Z`, `${btoa(firebase.auth.currentUser.email)}`)
+                    setUser(firebase.auth.currentUser.email)
+                } else {
+                    localStorage.setItem('Zx1%sa3@R--26Z', '')
+                }
+            })
+        })()
+    })
 
     return (
         <UserContext.Provider value={[user, setUser]}>
-            <ToastContext.Provider value={[toast, setToast]}>
-                {children}
-            </ToastContext.Provider>
+            {children}
         </UserContext.Provider>
     )
 }

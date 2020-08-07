@@ -1,14 +1,14 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState, useContext, } from 'react'
 import { Link, useHistory, } from 'react-router-dom'
 import firebase from '../../firebase'
-import { ToastContext, UserContext } from '../../Store'
+import { UserContext } from '../../Store'
 import Loader from '../../components/loader'
-import ErrorAlert from '../../components/error-alert'
+import { toast } from 'react-toastify'
+
 
 function Register() {
-    const [, setToast] = useContext(ToastContext)
+
     const [, setUser] = useContext(UserContext)
-    const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const history = useHistory()
 
@@ -18,31 +18,21 @@ function Register() {
         if (rePassword.value === password.value) {
             setLoading(true)
             firebase.auth.createUserWithEmailAndPassword(email.value, password.value).then(() => {
+                toast.success('Sucessfully logged in')
                 setUser(email.value)
-                setToast('logged')
-                history.push('/profile')
+                localStorage.getItem('prevPath') ? history.push(`${localStorage.getItem('prevPath')}`) : history.push('/profile')
             }).catch(err => {
                 console.log(err)
-                setError(err.message)
+                toast.error(err.message)
                 setLoading(false)
             })
         } else {
-            setError('The passwords must match!')
+            toast.error('Passwords must match')
         }
-
     }
-    useEffect(() => {
-        let mount = true
-        if (firebase.auth.currentUser && mount) {
-            setToast('logged')
-            history.push('/')
-        }
-        return () => mount = false
-    }, [history, setToast])
 
     return (
         <div className="container">
-            {error ? <ErrorAlert message={error} /> : null}
             <div className="row">
                 <div className="col">
                     <form className="form" onSubmit={register}>

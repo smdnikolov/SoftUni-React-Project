@@ -3,9 +3,9 @@ import icon from '../../utils/portfolio.png'
 import AdsListing from '../../components/ad-listing'
 import Loader from '../../components/loader'
 import firebase from '../../firebase.js'
-import { UserContext, ToastContext } from '../../Store'
+import { UserContext } from '../../Store'
 import { useHistory } from 'react-router-dom'
-import SuccessAlert from '../../components/success-alert'
+import {toast} from 'react-toastify'
 
 function Profile() {
 
@@ -13,7 +13,6 @@ function Profile() {
     const [ads, setAds] = useState(null)
     const [myAds, setMyAds] = useState(null)
     const [myFollowedAds, setFollowedAds] = useState(null)
-    const [toast, setToast] = useContext(ToastContext)
     const [user, setUser] = useContext(UserContext)
     const [loading, setLoading] = useState(true)
     const [flag, setFlag] = useState(true)
@@ -21,20 +20,9 @@ function Profile() {
     const [message, setMessage] = useState('')
     const [name, setName] = useState('')
 
-    // useEffect(() => {
-    //     let mount = true
-    //     if (user && !mount) {
-    //         setToast('logged')
-    //         return history.push('/')
-    //     }
-    //     return () => {
-    //         mount = false
-    //     }
-    // })
-
     useEffect(() => {
-        let mount = true;
         setLoading(true)
+        let mount = true;
         firebase.getAds().then((res) => {
             if (mount) {
                 let fetched = []
@@ -52,22 +40,13 @@ function Profile() {
         }).catch((err) => {
             console.log(err)
         })
-        setFlag(false)
         return () => { mount = false }
     }, [user])
-    
-    useEffect(() => {
-        if ((toast === 'logged' || toast === 'deleted') && !flag) {
-            setTimeout(() => {
-                setToast('')
-            }, 2000)
-        }
-    }, [setToast, toast, flag])
 
     function logout() {
         firebase.auth.signOut()
+        toast.info('Logged out')
         setUser(null)
-        setToast('loggedOut')
         history.push('/login')
     }
     function toggleSection(e) {
@@ -88,8 +67,6 @@ function Profile() {
             {flag
                 ? <div className="jumbotron"><h1>Loading</h1><Loader /></div>
                 : <div>
-                    {toast === 'deleted' ? <SuccessAlert message='Ad closed sucessfully' /> : null}
-                    {toast === 'logged' ? <SuccessAlert message='Logged in sucessfully' /> : null}
                     <div className="row">
                         <div className="col">
                             <div className="jumbotron prof">
@@ -115,7 +92,6 @@ function Profile() {
                 </div>
             }
         </div>
-
     )
 }
 

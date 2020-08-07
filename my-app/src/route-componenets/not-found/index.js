@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import notFoundImg from '../../utils/error-404.png'
 
 function NotFound() {
 
     const history = useHistory()
-
+    useEffect(() => { localStorage.removeItem('prevPath') })
     let styles = {
         margin: '50px',
     };

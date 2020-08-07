@@ -1,16 +1,14 @@
 import React, { useContext, useState, useEffect } from 'react'
-import { UserContext, ToastContext } from '../../Store'
+import { UserContext } from '../../Store'
 import { useHistory, useParams } from 'react-router-dom'
-import ErrorAlert from '../../components/error-alert'
 import Loader from '../../components/loader'
 import firebase from '../../firebase.js'
+import { toast } from 'react-toastify'
 
 
 
 function EditAd() {
-    const [, setToast] = useContext(ToastContext)
     const [user,] = useContext(UserContext)
-    const [error,] = useState('')
     const [loading, setLoading] = useState(false)
     const history = useHistory()
     const id = useParams().id
@@ -23,49 +21,41 @@ function EditAd() {
         setLoading(true)
         let data = JSON.parse(JSON.stringify(vals));
         firebase.update(id, data).then((res) => {
+            toast.info('Ad has been edited')
             history.push('/details/' + id)
-        }).catch((err) => {
-            history.push('/network-error')
+        }).catch(err => {
             console.log(err)
+            toast.error(err.message)
+            history.push('/network-error')
         })
     }
 
-    // useEffect(() => {
-    //     console.log(1)
-
-    //     firebase.auth.onAuthStateChanged((res) => {
-    //         if (res) {
-    //             setUser(firebase.auth.currentUser.email)
-    //         } else {
-    //             setUser(null)
-    //         }
-    //     })
-    // })
-
     useEffect(() => {
         window.scrollTo(0, 0)
+        localStorage.removeItem('prevPath')
     }, [])
+
     useEffect(() => {
         firebase.getAd(id).then((res) => {
             if (!res.data) {
                 history.push("/not-found");
+                toast.error('There is no such Ad')
             } else if (res.data.email !== user) {
-                setToast('noAuth')
+                toast.warn('You have no permission to edit this Ad')
                 history.push("/");
             } else {
                 setVals(res.data)
                 setFlag(false)
-                setToast('edited')
             }
-        }).catch((err) => {
+        }).catch(err => {
             console.log(err)
-            history.push(`/network-error`)
+            toast.error(err.message)
+            history.push('/network-error')
         })
-    }, [history, id, user, setToast])
+    }, [history, id, user])
 
     return (
         <div className="container">
-            {error ? <ErrorAlert message={error} /> : null}
             <div className="row">
                 <div className="col">
                     {flag
