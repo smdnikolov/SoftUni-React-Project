@@ -16,7 +16,7 @@ import ProtectedRoute from './ProtectedRoute'
 
 
 
-function Router(props) {
+const Router = (props) => {
 
     const [user,] = useContext(UserContext)
 
@@ -34,7 +34,6 @@ function Router(props) {
             <Route path='*' exact component={NotFound} />
         </Switch>
     )
-
 }
 
 export default Router;

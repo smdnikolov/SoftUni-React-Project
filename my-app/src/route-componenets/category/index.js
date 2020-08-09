@@ -6,7 +6,8 @@ import AdsListing from '../../components/ad-listing'
 import Loader from '../../components/loader'
 
 
-function Category() {
+const Category = () => {
+    
     const history = useHistory()
     const [loading, setLoading] = useState(true)
     const [message, setMessage] = useState('')
@@ -18,7 +19,7 @@ function Category() {
 
     useEffect(() => {
         localStorage.removeItem('prevPath')
-        firebase.getAds(1,5n).then((res) => {
+        firebase.getAds(1, 5n).then((res) => {
             let fetchedData = []
             for (let key in res.data) {
                 fetchedData.unshift({

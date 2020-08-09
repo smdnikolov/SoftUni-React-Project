@@ -1,8 +1,8 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import categories from '../../utils/categories'
 
-function BrowseCategories() {
+const BrowseCategories = () => {
     const categoriesList = categories.map((category, index) =>
         <li key={index}>
             <Link to={'/category/' + category.link}>

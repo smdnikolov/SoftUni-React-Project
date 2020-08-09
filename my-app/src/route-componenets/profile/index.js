@@ -4,11 +4,11 @@ import AdsListing from '../../components/ad-listing'
 import Loader from '../../components/loader'
 import firebase from '../../firebase.js'
 import { UserContext } from '../../Store'
-import { useHistory} from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
-function Profile() {
-
+const Profile = () => {
+    const styles = { 'marginTop': '140px' }
     const history = useHistory()
     const [ads, setAds] = useState(null)
     const [myAds, setMyAds] = useState(null)
@@ -46,16 +46,22 @@ function Profile() {
             toast.error(err.message)
             history.push('/network-error')
         })
-        return () => { mount = false }
-    }, [user, history,ads])
+        return () => {
+            localStorage.removeItem('page')
+            localStorage.removeItem('sort')
+            mount = false
+        }
+    }, [user, history, ads])
 
-    function logout() {
+    const logout = () => {
         firebase.auth.signOut()
+        localStorage.removeItem('page')
+        localStorage.removeItem('sort')
         toast.success('Successfully logged out')
         setUser(null)
         history.push('/login')
     }
-    function toggleSection(e) {
+    const toggleSection = (e) => {
         localStorage.removeItem('page')
         localStorage.removeItem('sort')
         if (e.target.textContent === 'My Ads') {
@@ -73,7 +79,7 @@ function Profile() {
     return (
         <div className="container search">
             {flag
-                ? <div className="jumbotron"><h1>Loading</h1><Loader /></div>
+                ? <div className="jumbotron" style={styles}><h1>Loading</h1><Loader /></div>
                 : <div>
                     <div className="row">
                         <div className="col">

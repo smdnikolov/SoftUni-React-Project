@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 
 
 
-function EditAd() {
+const EditAd = () => {
     const [user,] = useContext(UserContext)
     const [loading, setLoading] = useState(false)
     const history = useHistory()
@@ -15,9 +15,8 @@ function EditAd() {
     const [flag, setFlag] = useState(true)
     const [vals, setVals] = useState({})
 
-    async function submitAd(e) {
+    const submitAd = async (e) => {
         e.preventDefault()
-
         setLoading(true)
         let data = JSON.parse(JSON.stringify(vals));
         firebase.update(id, data).then((res) => {

@@ -3,9 +3,8 @@ import BrowseCategories from '../../components/browse-categories'
 
 
 
+const Home = () => {
 
-function Home() {
-    
     useEffect(() => { localStorage.removeItem('prevPath') })
 
     return (

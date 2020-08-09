@@ -7,8 +7,7 @@ import Footer from './components/footer'
 import { ToastContainer, Flip } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 
-function App() {
-
+const App = () => {
   return (
     <div className="App">
       <Store>

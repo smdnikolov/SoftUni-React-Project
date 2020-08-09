@@ -5,13 +5,13 @@ import firebase from '../../firebase.js'
 import { toast } from 'react-toastify'
 
 
-function PostAd() {
+const PostAd = () => {
 
     const [price, setPrice] = useState(0)
     const [loading, setLoading] = useState(false)
     const history = useHistory()
 
-    function getCurrentDate() {
+    const getCurrentDate = () => {
         const date = new Date()
         const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1
         const mins = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes()
@@ -21,7 +21,7 @@ function PostAd() {
         return `${day}/${month}/${year} - ${hours}:${mins}`
     }
 
-    function submitAd(e) {
+    const submitAd = (e) => {
         e.preventDefault()
         const { title, phoneNumber, city, price, category, condition, description, imageUrl } = e.target.elements
         const date = getCurrentDate()

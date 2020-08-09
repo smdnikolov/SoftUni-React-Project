@@ -4,7 +4,7 @@ import BrowseCategories from '../../components/browse-categories'
 import Pagination from '../pagination'
 
 
-function AdListing(props) {
+const AdListing = (props) => {
     const [ads, setAds] = useState(props.ads)
     const [sorting, setSorting] = useState('Latest')
     const location = useLocation().pathname
@@ -14,7 +14,7 @@ function AdListing(props) {
     const indexOfFirstAd = indexOfLastAd - perPage
     const currentAds = ads.slice(indexOfFirstAd, indexOfLastAd)
 
-    function listAd(ad) {
+    const listAd = (ad) => {
         return (
             <div className="container" key={ad.id}>
                 <Link to={"/details/" + ad.id}>
@@ -38,11 +38,10 @@ function AdListing(props) {
             </div>)
     }
 
-    function sortingFunc(sortType, array) {
+    const sortingFunc = (sortType, array) => {
+        [...document.getElementsByClassName('active-page')].forEach(x => x.classList.remove('active-page'))
+        Array.from(document.getElementsByClassName('page-link'))[0].classList.add('active-page')
 
-        if (localStorage.getItem('page') !== '1') {
-            [...document.getElementsByClassName('active')].forEach(x => x.classList.remove('active'))
-        }
         if (sortType === 'Cheapest') {
             localStorage.setItem('sort', sortType)
             const sorted = [...array].sort((a, b) => a.price - b.price)
@@ -60,16 +59,18 @@ function AdListing(props) {
             setAds(array)
             setSorting(sortType)
         }
+        localStorage.setItem('page', 1)
+        setCurrentPage(1)
     }
 
-    function sort(e, ads) {
+    const sort = (e, ads) => {
         const sortType = e.target.textContent
         sortingFunc(sortType, ads)
     }
 
     const paginate = (pageNumber, e) => {
-        [...document.getElementsByClassName('active')].forEach(x => x.classList.remove('active'))
-        e.target.classList.add('active')
+        [...document.getElementsByClassName('active-page')].forEach(x => x.classList.remove('active-page'))
+        e.target.classList.add('active-page')
         localStorage.setItem('page', pageNumber)
         setCurrentPage(pageNumber)
     }
@@ -77,52 +78,31 @@ function AdListing(props) {
     useEffect(() => {
         const sortType = localStorage.getItem('sort')
         const visitedPage = localStorage.getItem('page')
+
         if (ads.length) {
-            if (!visitedPage) {
-                [...document.getElementsByClassName('page-link')][0].classList.add('active')
-            }else{
-              
-               
+            if (visitedPage) {
+                if (sortType) {
+                    sortingFunc(sortType, ads)
+                }
+                setCurrentPage(visitedPage)
+                Array.from(document.getElementsByClassName('active-page')).forEach(x => x.classList.remove('active-page'))
+                Array.from(document.getElementsByClassName('page-link')).filter(x => x.textContent === visitedPage)[0].classList.add('active-page')
+            } else {
+                Array.from(document.getElementsByClassName('page-link'))[0].classList.add('active-page')
+                setCurrentPage(1)
             }
-
         }
-        // if (ads.length && !sortType && !visitedPage) {
-        //     [...document.getElementsByClassName('page-link')][0].classList.add('active')
-        // } else if (ads.length && sortType) {
-        //     sortingFunc(sortType,ads)
-        // }
-        // if (ads.length && visitedPage) {
-        //     console.log(visitedPage)
-        // }
-
-        // if (sortType) { sortingFunc(sortType, ads) }
-
-
-        // console.log(visitedPage)
-        //    localStorage.setItem('page',+visitedPage.textContent)
-        //     if (!visitedPage) {
-        //         [...document.getElementsByClassName('page-link')][0].classList.add('active')
-        //         setCurrentPage(1)
-
-        //     } else {
-        //         setCurrentPage(+visitedPage.textContent)
-        //         visitedPage.classList.add('active')
-        //         // localStorage.removeItem('page')
-        //     }
-
-
-
-    }, [setCurrentPage, ads.length, ads])
+        // eslint-disable-next-line
+    }, [setCurrentPage, ads.length])
 
     useEffect(() => {
         return () => {
             if (location !== '/profile') {
-                console.log('unmounting')
                 localStorage.removeItem("page")
                 localStorage.removeItem('sort')
             }
         }
-    },[])
+    }, [location])
 
     return (
         <div className="jumbotron" id="ad-list">

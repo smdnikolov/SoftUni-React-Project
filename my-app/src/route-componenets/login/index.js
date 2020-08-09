@@ -5,13 +5,13 @@ import firebase from '../../firebase'
 import Loader from '../../components/loader'
 import { toast } from 'react-toastify'
 
-function Login() {
+const Login = () => {
     const history = useHistory()
     const [loading, setLoading] = useState(false)
     const [, setUser] = useContext(UserContext)
 
 
-    function signUp(event) {
+    const signUp = (event) => {
         localStorage.setItem('loggingIn', ' yes')
         event.preventDefault()
         const { email, password } = event.target.elements

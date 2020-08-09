@@ -5,7 +5,7 @@ import notFoundImg from '../../utils/networkError.png'
 
 
 
-function NetworkError() {
+const NetworkError = () => {
     const history = useHistory()
     let styles = {
         margin: '50px',

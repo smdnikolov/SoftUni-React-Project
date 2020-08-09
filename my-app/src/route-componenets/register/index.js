@@ -6,13 +6,13 @@ import Loader from '../../components/loader'
 import { toast } from 'react-toastify'
 
 
-function Register() {
+const Register = () => {
 
     const [, setUser] = useContext(UserContext)
     const [loading, setLoading] = useState(false)
     const history = useHistory()
 
-    function register(event) {
+    const register = (event) => {
         event.preventDefault()
         localStorage.setItem('loggingIn', ' yes')
         const { email, password, rePassword } = event.target.elements

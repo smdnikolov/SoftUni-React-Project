@@ -2,13 +2,11 @@ import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import notFoundImg from '../../utils/error-404.png'
 
-function NotFound() {
+const NotFound = () => {
 
     const history = useHistory()
     useEffect(() => { localStorage.removeItem('prevPath') })
-    let styles = {
-        margin: '50px',
-    };
+    let styles = { margin: '50px' };
     return (
         <div className="container jumbotron err">
             <button className="btn btn-primary shadow-none" style={styles} onClick={() => history.push('/')}>Take Me Home</button>

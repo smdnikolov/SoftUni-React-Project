@@ -4,7 +4,7 @@ import logo from '../../utils/logo.png';
 import { Link } from 'react-router-dom'
 import { UserContext } from '../../Store';
 
-function Header() {
+const Header = () => {
 
     const [user,] = useContext(UserContext)
 

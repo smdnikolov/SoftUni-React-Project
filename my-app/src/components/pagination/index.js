@@ -6,9 +6,7 @@ const Pagination = ({ perPage, totalAds, paginate }) => {
     for (let i = 1; i <= Math.ceil(totalAds / perPage); i++) {
         pageNumbers.push(i)
     }
-
     return (
-
         <nav className='pag'>
             <ul className='pagination'>
                 {pageNumbers.map(x => (
@@ -18,7 +16,6 @@ const Pagination = ({ perPage, totalAds, paginate }) => {
                 ))}
             </ul>
         </nav >
-
     )
 }
 export default Pagination

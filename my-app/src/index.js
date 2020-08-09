@@ -5,13 +5,7 @@ import App from './App';
 import Store from './Store'
 import { BrowserRouter } from 'react-router-dom'
 
-
-
-
-
-
 ReactDOM.render(
-
   <Store>
     <BrowserRouter>
       <App />

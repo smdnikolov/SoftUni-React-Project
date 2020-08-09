@@ -6,7 +6,7 @@ import categories from '../../utils/categories'
 import { UserContext } from '../../Store'
 import { toast } from 'react-toastify'
 
-function Details() {
+const Details = () => {
     const path = useLocation().pathname
     const id = useParams().id
     const [loading, setLoading] = useState(true)
@@ -47,7 +47,7 @@ function Details() {
 
     const closeAd = async (id) => {
         await firebase.del(id).then(() => {
-            toast.info('Ad deleted successfully')
+            toast.success('Ad closed successfully')
             history.push('/profile')
         }).catch(err => {
             console.log(err)
@@ -86,7 +86,7 @@ function Details() {
     return (
         <div >
             {loading
-                ? <div className="container jumbotron">
+                ? <div className="container jumbotron det">
                     <h1>Loading</h1>
                     <Loader />
                 </div>
