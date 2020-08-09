@@ -14,12 +14,13 @@ function Register() {
 
     function register(event) {
         event.preventDefault()
+        localStorage.setItem('loggingIn', ' yes')
         const { email, password, rePassword } = event.target.elements
         if (rePassword.value === password.value) {
             setLoading(true)
             firebase.auth.createUserWithEmailAndPassword(email.value, password.value).then(() => {
-                toast.success('Sucessfully logged in')
                 setUser(email.value)
+                toast.success('Sucessfully logged in')
                 localStorage.getItem('prevPath') ? history.push(`${localStorage.getItem('prevPath')}`) : history.push('/profile')
             }).catch(err => {
                 console.log(err)

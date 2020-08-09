@@ -5,7 +5,7 @@ import Loader from '../../components/loader'
 import firebase from '../../firebase.js'
 import { UserContext } from '../../Store'
 import { useHistory } from 'react-router-dom'
-import {toast} from 'react-toastify'
+import { toast } from 'react-toastify'
 
 function Profile() {
 
@@ -21,6 +21,10 @@ function Profile() {
     const [name, setName] = useState('')
 
     useEffect(() => {
+        setTimeout(() => {
+            localStorage.removeItem('loggingIn')
+        }, 1110)
+
         setLoading(true)
         let mount = true;
         firebase.getAds().then((res) => {
@@ -39,13 +43,15 @@ function Profile() {
             }
         }).catch((err) => {
             console.log(err)
+            toast.error(err.message)
+            history.push('/network-error')
         })
         return () => { mount = false }
-    }, [user])
+    }, [user, history])
 
     function logout() {
         firebase.auth.signOut()
-        toast.info('Logged out')
+        toast.success('Successfully logged out')
         setUser(null)
         history.push('/login')
     }

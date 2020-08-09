@@ -1,4 +1,5 @@
 import React from 'react';
+import { toast } from 'react-toastify'
 import { Route, Redirect } from 'react-router-dom';
 
 const ProtectedRoute = ({ component: Component, user, ...rest }) => {
@@ -7,10 +8,11 @@ const ProtectedRoute = ({ component: Component, user, ...rest }) => {
       props => {
         if (!user) {
           return <Component {...rest} {...props} />
-        } else {
+        } else if (user && !localStorage.getItem('loggingIn')) {
+          toast.info('You are already logged in')
           return <Redirect to={
             {
-              pathname: '/',
+              pathname: '/profile',
               state: {
                 from: props.location
               }
