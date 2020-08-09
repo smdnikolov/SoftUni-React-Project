@@ -18,7 +18,7 @@ function Category() {
 
     useEffect(() => {
         localStorage.removeItem('prevPath')
-        firebase.getAds().then((res) => {
+        firebase.getAds(1,5n).then((res) => {
             let fetchedData = []
             for (let key in res.data) {
                 fetchedData.unshift({

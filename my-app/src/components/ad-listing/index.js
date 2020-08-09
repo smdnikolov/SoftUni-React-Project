@@ -1,12 +1,18 @@
-import React, { useState, } from 'react'
+import React, { useState, useEffect, } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import BrowseCategories from '../../components/browse-categories'
+import Pagination from '../pagination'
 
 
 function AdListing(props) {
     const [ads, setAds] = useState(props.ads)
     const [sorting, setSorting] = useState('Latest')
     const location = useLocation().pathname
+    const [perPage,] = useState(5)
+    const [currentPage, setCurrentPage] = useState(1)
+    const indexOfLastAd = currentPage * perPage
+    const indexOfFirstAd = indexOfLastAd - perPage
+    const currentAds = ads.slice(indexOfFirstAd, indexOfLastAd)
 
     function listAd(ad) {
         return (
@@ -31,31 +37,100 @@ function AdListing(props) {
                 </Link>
             </div>)
     }
-    function sort(e, ads) {
-        const sortType = e.target.textContent
+
+    function sortingFunc(sortType, array) {
+
+        if (localStorage.getItem('page') !== '1') {
+            [...document.getElementsByClassName('active')].forEach(x => x.classList.remove('active'))
+        }
         if (sortType === 'Cheapest') {
-            const sorted = [...ads].sort((a, b) => a.price - b.price)
+            localStorage.setItem('sort', sortType)
+            const sorted = [...array].sort((a, b) => a.price - b.price)
             setAds(sorted)
             setSorting(sortType)
         }
         if (sortType === 'Most Expensive') {
-            const sorted = [...ads].sort((a, b) => b.price - a.price)
+            localStorage.setItem('sort', sortType)
+            const sorted = [...array].sort((a, b) => b.price - a.price)
             setAds(sorted)
             setSorting(sortType)
         }
         if (sortType === 'Latest') {
-            setAds(ads)
+            localStorage.setItem('sort', sortType)
+            setAds(array)
             setSorting(sortType)
         }
     }
 
+    function sort(e, ads) {
+        const sortType = e.target.textContent
+        sortingFunc(sortType, ads)
+    }
+
+    const paginate = (pageNumber, e) => {
+        [...document.getElementsByClassName('active')].forEach(x => x.classList.remove('active'))
+        e.target.classList.add('active')
+        localStorage.setItem('page', pageNumber)
+        setCurrentPage(pageNumber)
+    }
+
+    useEffect(() => {
+        const sortType = localStorage.getItem('sort')
+        const visitedPage = localStorage.getItem('page')
+        if (ads.length) {
+            if (!visitedPage) {
+                [...document.getElementsByClassName('page-link')][0].classList.add('active')
+            }else{
+              
+               
+            }
+
+        }
+        // if (ads.length && !sortType && !visitedPage) {
+        //     [...document.getElementsByClassName('page-link')][0].classList.add('active')
+        // } else if (ads.length && sortType) {
+        //     sortingFunc(sortType,ads)
+        // }
+        // if (ads.length && visitedPage) {
+        //     console.log(visitedPage)
+        // }
+
+        // if (sortType) { sortingFunc(sortType, ads) }
+
+
+        // console.log(visitedPage)
+        //    localStorage.setItem('page',+visitedPage.textContent)
+        //     if (!visitedPage) {
+        //         [...document.getElementsByClassName('page-link')][0].classList.add('active')
+        //         setCurrentPage(1)
+
+        //     } else {
+        //         setCurrentPage(+visitedPage.textContent)
+        //         visitedPage.classList.add('active')
+        //         // localStorage.removeItem('page')
+        //     }
+
+
+
+    }, [setCurrentPage, ads.length, ads])
+
+    useEffect(() => {
+        return () => {
+            if (location !== '/profile') {
+                console.log('unmounting')
+                localStorage.removeItem("page")
+                localStorage.removeItem('sort')
+            }
+        }
+    },[])
+
     return (
-        <div className="jumbotron">
+        <div className="jumbotron" id="ad-list">
             {ads.length
                 ? <div>
-                    <h1>Browse {props.name} Ads</h1>
+                    <h1 >Browse {props.name} Ads</h1>
                     <div className="dropdown">
-                        <p>Sorted By {sorting}</p>
+                        <p >Sorted By {sorting}</p>
                         <button className="btn btn-secondary dropdown-toggle shadow-none" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sort By</button>
                         <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                             <button onClick={(е) => sort(е, props.ads)} className="btn-primary shadow-none">Latest</button>
@@ -63,8 +138,8 @@ function AdListing(props) {
                             <button onClick={(е) => sort(е, ads)} className="btn-primary shadow-none">Most Expensive</button>
                         </div>
                     </div>
-                    <div className="ad-container">{ads.map(x => listAd(x))
-                    }</div>
+                    <div className="ad-container">{currentAds.map(x => listAd(x))}</div>
+                    <Pagination perPage={perPage} totalAds={ads.length} paginate={paginate} />
                 </div>
                 : <div className="ad-container">
                     {props.message}
@@ -74,6 +149,7 @@ function AdListing(props) {
                                 ? <div>
                                     <h3>Browse Categories</h3>
                                     <BrowseCategories />
+
                                 </div>
                                 : <div> <Link to="/post-ad" >Be the first to Post</Link></div>
                             }

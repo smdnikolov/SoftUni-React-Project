@@ -328,4 +328,27 @@ form .btn{
 .ad-container h3{
   margin-top:50px
 }
-
+.pag{
+  display:inline-block
+}
+.page-link {
+  color: #6c757d;
+  background-color: #ffaa33;
+  border: 1px solid #ffaa33;
+}
+.page-link:hover,.page-link:focus {
+  color: #fff;
+  background-color: #6c757d;
+  border: 1px solid #6c757d;
+  cursor:pointer;
+  outline-color: none;
+  box-shadow: none;
+}
+.active {
+    color: #fff;
+    background-color: #6c757d;
+    border: 1px solid #6c757d;
+    cursor:pointer;
+    outline-color: none;
+    box-shadow: none;
+}

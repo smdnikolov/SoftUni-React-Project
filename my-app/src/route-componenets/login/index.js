@@ -12,14 +12,13 @@ function Login() {
 
 
     function signUp(event) {
-        localStorage.setItem('loggingIn',' yes')
+        localStorage.setItem('loggingIn', ' yes')
         event.preventDefault()
         const { email, password } = event.target.elements
         if (email.value && password.value) {
             firebase.auth.signInWithEmailAndPassword(email.value, password.value).then((res) => {
                 setLoading(true)
                 setUser(email.value)
-                console.log(localStorage)
                 toast.success('Sucessfully logged in')
                 localStorage.getItem('prevPath') ? history.push(`${localStorage.getItem('prevPath')}`) : history.push('/profile')
             }).catch(err => {

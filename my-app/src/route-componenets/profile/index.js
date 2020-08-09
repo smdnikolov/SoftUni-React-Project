@@ -4,7 +4,7 @@ import AdsListing from '../../components/ad-listing'
 import Loader from '../../components/loader'
 import firebase from '../../firebase.js'
 import { UserContext } from '../../Store'
-import { useHistory } from 'react-router-dom'
+import { useHistory} from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 function Profile() {
@@ -23,7 +23,7 @@ function Profile() {
     useEffect(() => {
         setTimeout(() => {
             localStorage.removeItem('loggingIn')
-        }, 1110)
+        }, 1000)
 
         setLoading(true)
         let mount = true;
@@ -47,7 +47,7 @@ function Profile() {
             history.push('/network-error')
         })
         return () => { mount = false }
-    }, [user, history])
+    }, [user, history,ads])
 
     function logout() {
         firebase.auth.signOut()
@@ -56,6 +56,8 @@ function Profile() {
         history.push('/login')
     }
     function toggleSection(e) {
+        localStorage.removeItem('page')
+        localStorage.removeItem('sort')
         if (e.target.textContent === 'My Ads') {
             setAds(myAds)
             setName('My')

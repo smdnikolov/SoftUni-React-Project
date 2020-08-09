@@ -18,6 +18,7 @@ function Details() {
 
     useEffect(() => {
         localStorage.removeItem('prevPath')
+        localStorage.removeItem('loggingIn')
         let mounted = true
         if (mounted) {
             (async function asd() {
