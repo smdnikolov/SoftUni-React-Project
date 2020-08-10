@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import categories from '../../utils/categories'
 import firebase from '../../firebase'
 import AdsListing from '../../components/ad-listing'
 import Loader from '../../components/loader'
+import SearchForm from '../../components/search-form'
+import { toast } from 'react-toastify'
 
 
 const Category = () => {
-    
+
     const history = useHistory()
     const [loading, setLoading] = useState(true)
     const [message, setMessage] = useState('')
@@ -18,8 +20,9 @@ const Category = () => {
 
 
     useEffect(() => {
+        window.scrollTo(0, 0)
         localStorage.removeItem('prevPath')
-        firebase.getAds(1, 5n).then((res) => {
+        firebase.getAds().then((res) => {
             let fetchedData = []
             for (let key in res.data) {
                 fetchedData.unshift({
@@ -33,6 +36,7 @@ const Category = () => {
             setName(category.name)
             setLoading(false)
         }).catch((err) => {
+            toast.error(err.message)
             console.log(err)
             history.push(`/network-error`)
         })
@@ -48,17 +52,7 @@ const Category = () => {
                         <h1>
                             <img src={category.url} alt="" width="200px" />
                         </h1>
-                        <form action="" >
-                            <input type="text" id="myInput" placeholder="Find in Cars..." />
-                            <select name="cities" form="citiesform">
-                                <option value="Anywhere">Anywhere</option> selected
-                                <option value="Sofia">Sofia</option>
-                                <option value="Plovdiv">Plovdiv</option>
-                                <option value="Varna">Varna</option>
-                                <option value="Burgas">Burgas</option>
-                            </select>
-                            <Link className="btn btn-primary shadow-none" to="/register.html" role="button">Search</Link>
-                        </form>
+                        <SearchForm />
                     </div>
                     {loading
                         ? <div className="jumbotron"><h1>Loading</h1><Loader /></div>

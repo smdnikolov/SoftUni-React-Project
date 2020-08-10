@@ -10,15 +10,18 @@ import PostAd from '../route-componenets/post-ad'
 import EditAd from '../route-componenets/edit'
 import NotFound from '../route-componenets/not-found'
 import NetworkError from '../route-componenets/network-error'
-import { UserContext } from '../Store'
+import Search from '../route-componenets/search'
+import { UserContext, QueryContext } from '../Store'
 import AuthGuard from './AuthGuard'
 import ProtectedRoute from './ProtectedRoute'
+import SearchProtect from './SearchProtect'
 
 
 
 const Router = (props) => {
 
     const [user,] = useContext(UserContext)
+    const [query,] = useContext(QueryContext)
 
     return (
         <Switch>
@@ -30,6 +33,7 @@ const Router = (props) => {
             <AuthGuard user={user} path='/profile' component={Profile} />
             <AuthGuard user={user} path='/post-ad' component={PostAd} />
             <AuthGuard user={user} path='/edit/:id' component={EditAd} />
+            <SearchProtect query={query} path="/search" component={Search} />
             <Route path="/network-error" component={NetworkError} />
             <Route path='*' exact component={NotFound} />
         </Switch>
