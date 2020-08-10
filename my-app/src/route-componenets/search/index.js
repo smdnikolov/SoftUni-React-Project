@@ -47,15 +47,17 @@ const Search = () => {
             fetchedData = fetchedData.filter((x) => {
                 if (query.category === 'any' && query.city === 'any' && query.search === '') {
                     return true
+                } else if (query.category === 'any' && query.city === 'any' && query.search !== '') {
+                    return x.title.includes(query.search)
 
                 } else if (query.category !== 'any' && query.city === 'any' && query.search === '') {
                     return x.category === query.category
                 } else if (query.category !== 'any' && query.city === 'any' && query.search !== '') {
                     return x.category === query.category && x.title.includes(query.search)
 
-                } else if (x.categories !== 'any' && query.city !== 'any' && query.search === '') {
+                } else if (query.category !== 'any' && query.city !== 'any' && query.search === '') {
                     return x.category === query.category && x.city === query.city
-                } else if (x.categories !== 'any' && query.city !== 'any' && query.search !== '') {
+                } else if (query.category !== 'any' && query.city !== 'any' && query.search !== '') {
                     return x.category === query.category && x.city === query.city && x.title.includes(query.search)
 
                 } else if (query.category === 'any' && query.city !== 'any' && query.search === '') {
