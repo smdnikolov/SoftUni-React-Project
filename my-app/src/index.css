@@ -142,7 +142,7 @@ margin: 10px
   margin-top:75px
 }
 .mb-4{
-  margin-bottom: 3rem!important;
+  margin: 1.5rem!important;
   margin-right: 25px;
   display: inline-block;
   height: calc(1.5em + .75rem + 2px);
@@ -203,7 +203,7 @@ margin: 10px
   margin-right: 25px;  
 }
 form .btn{
-  margin-bottom:40px;
+  margin:40px;
 }
 .jumbotron input:focus {
 
@@ -383,4 +383,11 @@ form .btn{
   background-color: #6c757d;
   color: #fff;
   outline: none;
+}
+.err{
+  color: #c93644;
+  text-align: left;
+  font-size: 17px;
+  margin-left: 1.5rem;
+  margin-bottom: 0px;
 }
