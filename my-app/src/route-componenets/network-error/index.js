@@ -12,7 +12,7 @@ const NetworkError = () => {
     };
     useEffect(() => { localStorage.removeItem('prevPath') })
     return (
-        <div className="container jumbotron err">
+        <div className="container jumbotron">
             <button className="btn btn-primary shadow-none" style={styles} onClick={() => history.push('/')}>Take Me Home</button>
             <h1>Network Error :(</h1>
             <div className="row">

@@ -171,57 +171,48 @@ margin: 10px
   color: #ffaa33;
 }
 .jumbotron h1 {
-  margin-bottom: 50px;
+  margin: 50px;
 }
 
-.jumbotron input{
- margin-right: 25px;
-  display: inline-block;
-  height: calc(1.5em + .75rem + 2px);
-  padding: 0;
-  line-height: 0;
-  color: #545b62;
+.jumbotron input {
   font-size: x-large;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: .25rem;
-  transition: border-color .15s  
+  padding: 10px;
+  margin: 40px;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-bottom: none;
+  color:#545b62;
+  border-radius: 5px;
 }
 .jumbotron select {
-  display: inline-block;
-  height: calc(1.5em + .75rem + 2px);
-  padding: 0;
-  line-height: 0;
-  color:#545b62;
   font-size: x-large;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: .25rem;
-  transition: border-color .15s;
-  margin-right: 25px;  
+  color:#545b62;
+  padding: 10px;
+  margin: 40px;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-bottom: none;
+  border-radius: 5px;
 }
 form .btn{
   margin:40px;
 }
 .jumbotron input:focus {
-
   background-color: #fff;
   border-color: #ffaa33;
   outline: 0;
   box-shadow: 0 0 0 0.2rem #ffaa33;
-  display: inline-block;
-  height: calc(1.5em + .75rem + 2px);
-  padding: 0;
-  line-height: 0;
+  padding: 10px;
+  margin: 40px;
   color: #545b62;
-  font-size: x-large;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: .25rem;
-  transition: border-color .15s  
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-bottom: none;
+
+
 }
 .btn.focus, .btn:focus {
   outline: 0;
@@ -229,22 +220,17 @@ form .btn{
 }
 
 .jumbotron select:focus {
-
-  background-color: #fff;
-  border-color: #ffaa33;
+  font-size: x-large;
+  color:#545b62;
+  padding: 10px;
+  margin: 40px;
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  border-bottom: none;
+  border-radius: 5px;
   outline: 0;
   box-shadow: 0 0 0 0.2rem #ffaa33;
-  display: inline-block;
-  height: calc(1.5em + .75rem + 2px);
-  padding: 0;
-  line-height: 0;
-  color: #545b62;
-  font-size: x-large;
-  background-color: #fff;
-  background-clip: padding-box;
-  border: 1px solid #ced4da;
-  border-radius: .25rem;
-  transition: border-color .15s  
 }
 .jumbotron form{
   display: inline-flex;
@@ -390,4 +376,7 @@ form .btn{
   font-size: 17px;
   margin-left: 1.5rem;
   margin-bottom: 0px;
+}
+.error-page{
+margin-top: 140px;
 }

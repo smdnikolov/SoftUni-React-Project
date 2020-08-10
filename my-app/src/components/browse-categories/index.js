@@ -11,7 +11,20 @@ const BrowseCategories = () => {
             </Link>
         </li>
     )
-    return <ul className="cat">{categoriesList}</ul>
+    return <div>
+        < ul className="cat">{categoriesList}</ul>
+        <form >
+            <input type="text" id="myInput" placeholder="Search for ads..." />
+            <select name="cities" form="citiesform">
+                <option value="Anywhere">Anywhere</option> selected
+                                <option value="Sofia">Sofia</option>
+                <option value="Plovdiv">Plovdiv</option>
+                <option value="Varna">Varna</option>
+                <option value="Burgas">Burgas</option>
+            </select>
+            <button className="btn  shadow-none" >Search </button>
+        </form>
+    </div>
 }
 export default BrowseCategories
 
