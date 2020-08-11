@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { Redirect, useParams, useHistory } from 'react-router-dom';
 import categories from '../../utils/categories'
 import firebase from '../../firebase'
 import AdsListing from '../../components/ad-listing'
@@ -17,14 +17,11 @@ const Category = () => {
     const [name, setName] = useState('')
     const urlEnd = useParams().name
     const category = categories.filter(x => x.link === urlEnd)[0]
-    
+
 
 
     useEffect(() => {
-        if(!category){
-            toast.error('There is no such category')
-            history.push('/not-found')
-        }
+
         window.scrollTo(0, 0)
         localStorage.removeItem('prevPath')
         firebase.getAds().then((res) => {
@@ -48,24 +45,29 @@ const Category = () => {
 
     }, [urlEnd, history, category])
 
-    return (
-        <div className="container search">
-            <div className="row">
-                <div className="col">
-                    <div className="jumbotron">
-                        <h1>{category.name}</h1>
-                        <h1>
-                            <img src={category.url} alt="" width="200px" />
-                        </h1>
-                        <SearchForm />
+    if (!category) {
+        toast.error('There is no such category')
+        return <Redirect to='/not-found' />
+    } else {
+        return (
+            <div className="container search">
+                <div className="row">
+                    <div className="col">
+                        <div className="jumbotron">
+                            <h1>{category.name}</h1>
+                            <h1>
+                                <img src={category.url} alt="" width="200px" />
+                            </h1>
+                            <SearchForm />
+                        </div>
+                        {loading
+                            ? <div className="jumbotron"><h1>Loading</h1><Loader /></div>
+                            : <AdsListing ads={ads} name={name} message={message} />}
                     </div>
-                    {loading
-                        ? <div className="jumbotron"><h1>Loading</h1><Loader /></div>
-                        : <AdsListing ads={ads} name={name} message={message} />}
                 </div>
             </div>
-        </div>
-    )
+        )
+    }
 }
 
 export default Category
