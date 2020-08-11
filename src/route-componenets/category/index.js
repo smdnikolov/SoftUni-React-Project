@@ -21,28 +21,28 @@ const Category = () => {
 
 
     useEffect(() => {
-
-        window.scrollTo(0, 0)
-        localStorage.removeItem('prevPath')
-        firebase.getAds().then((res) => {
-            let fetchedData = []
-            for (let key in res.data) {
-                fetchedData.unshift({
-                    id: key,
-                    ...res.data[key]
-                })
-            }
-            fetchedData = fetchedData.filter(x => x.category.toLowerCase() === urlEnd)
-            setAds(fetchedData)
-            setMessage(`There are no Ads in ${category.name} yet`)
-            setName(category.name)
-            setLoading(false)
-        }).catch((err) => {
-            toast.error(err.message)
-            console.log(err)
-            history.push(`/network-error`)
-        })
-
+        if (category) {
+            window.scrollTo(0, 0)
+            localStorage.removeItem('prevPath')
+            firebase.getAds().then((res) => {
+                let fetchedData = []
+                for (let key in res.data) {
+                    fetchedData.unshift({
+                        id: key,
+                        ...res.data[key]
+                    })
+                }
+                fetchedData = fetchedData.filter(x => x.category.toLowerCase() === urlEnd)
+                setAds(fetchedData)
+                setMessage(`There are no Ads in ${category.name} yet`)
+                setName(category.name)
+                setLoading(false)
+            }).catch((err) => {
+                toast.error(err.message)
+                console.log(err)
+                history.push(`/network-error`)
+            })
+        }
     }, [urlEnd, history, category])
 
     if (!category) {
