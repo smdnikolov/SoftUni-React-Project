@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect, useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import categories from '../../utils/categories'
 import firebase from '../../firebase'
 import AdsListing from '../../components/ad-listing'
@@ -52,7 +52,7 @@ const Category = () => {
     return (
         <div >
             {loading
-                ? <div className="jumbotron"><h1>Loading</h1><Loader /></div>
+                ? <div className="container jumbotron"><h1>Loading</h1><Loader /></div>
                 : <div className="container search">
                     <div className="row">
                         <div className="col">
