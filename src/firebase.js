@@ -1,7 +1,6 @@
 import app from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/database'
-import { key, authDomain, databaseURL, projectId, storageBucket, messagingSenderId, appId } from './key'
 import axios from 'axios'
 
 const firebaseConfig = {
