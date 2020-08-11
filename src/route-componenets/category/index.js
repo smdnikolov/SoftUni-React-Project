@@ -17,9 +17,14 @@ const Category = () => {
     const [name, setName] = useState('')
     const urlEnd = useParams().name
     const category = categories.filter(x => x.link === urlEnd)[0]
+    
 
 
     useEffect(() => {
+        if(!category){
+            toast.error('There is no such category')
+            history.push('/not-found')
+        }
         window.scrollTo(0, 0)
         localStorage.removeItem('prevPath')
         firebase.getAds().then((res) => {
