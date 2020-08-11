@@ -5,7 +5,7 @@ import key from './key'
 import axios from 'axios'
 
 const firebaseConfig = {
-    apiKey: key,
+    apiKey: REACT_APP_FIREBASE_KEY,
     authDomain: "the-olm.firebaseapp.com",
     databaseURL: "https://the-olm.firebaseio.com",
     projectId: "the-olm",
