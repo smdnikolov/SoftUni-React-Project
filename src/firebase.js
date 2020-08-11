@@ -1,17 +1,17 @@
 import app from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/database'
-import key from './key'
+import { key, authDomain, databaseURL, projectId, storageBucket, messagingSenderId, appId } from './key'
 import axios from 'axios'
 
 const firebaseConfig = {
     apiKey: key,
-    authDomain: "the-olm.firebaseapp.com",
-    databaseURL: "https://the-olm.firebaseio.com",
-    projectId: "the-olm",
-    storageBucket: "the-olm.appspot.com",
-    messagingSenderId: "533289266506",
-    appId: "1:533289266506:web:1833febb1272c471fe25b3"
+    authDomain: authDomain,
+    databaseURL: databaseURL,
+    projectId: projectId,
+    storageBucket: storageBucket,
+    messagingSenderId: messagingSenderId,
+    appId: appId
 };
 
 
