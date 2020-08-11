@@ -50,22 +50,25 @@ const Category = () => {
         return <Redirect to='/not-found' />
     } else {
         return (
-            <div className="container search">
-                <div className="row">
-                    <div className="col">
-                        <div className="jumbotron">
-                            <h1>{category.name}</h1>
-                            <h1>
-                                <img src={category.url} alt="" width="200px" />
-                            </h1>
-                            <SearchForm />
+            <div >
+                {loading
+                    ? <div className="jumbotron"><h1>Loading</h1><Loader /></div>
+                    : <div className="container search">
+                        <div className="row">
+                            <div className="col">
+                                <div className="jumbotron">
+                                    <h1>{category.name}</h1>
+                                    <h1>
+                                        <img src={category.url} alt="" width="200px" />
+                                    </h1>
+                                    <SearchForm />
+                                </div>
+                                <AdsListing ads={ads} name={name} message={message} />
+                            </div>
                         </div>
-                        {loading
-                            ? <div className="jumbotron"><h1>Loading</h1><Loader /></div>
-                            : <AdsListing ads={ads} name={name} message={message} />}
                     </div>
-                </div>
-            </div>
+                }
+            </div >
         )
     }
 }
