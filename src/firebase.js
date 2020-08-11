@@ -5,7 +5,7 @@ import key from './key'
 import axios from 'axios'
 
 const firebaseConfig = {
-    apiKey: REACT_APP_FIREBASE_KEY,
+    apiKey: key,
     authDomain: "the-olm.firebaseapp.com",
     databaseURL: "https://the-olm.firebaseio.com",
     projectId: "the-olm",
@@ -33,10 +33,10 @@ class Firebase {
         return await axios.get(`https://the-olm.firebaseio.com/ads/${id}.json`)
     }
     async del(id) {
-        return axios.delete(`https://the-olm.firebaseio.com/ads/${id}.json`)
+        return await axios.delete(`https://the-olm.firebaseio.com/ads/${id}.json`)
     }
     async update(id, data) {
-        return axios.put(`https://the-olm.firebaseio.com/ads/${id}.json`, data)
+        return await axios.put(`https://the-olm.firebaseio.com/ads/${id}.json`, data)
     }
 }
 export default new Firebase()
