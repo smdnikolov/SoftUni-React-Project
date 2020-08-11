@@ -14,7 +14,7 @@ const Store = ({ children }) => {
                     localStorage.setItem(`Zx1%sa3@R--26Z`, `${btoa(firebase.auth.currentUser.email)}`)
                     setUser(firebase.auth.currentUser.email)
                 } else {
-                    localStorage.setItem('Zx1%sa3@R--26Z', '')
+                    localStorage.removeItem('Zx1%sa3@R--26Z')
                 }
             })
         })()
