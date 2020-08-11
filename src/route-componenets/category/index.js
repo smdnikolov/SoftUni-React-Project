@@ -42,35 +42,33 @@ const Category = () => {
                 console.log(err)
                 history.push(`/network-error`)
             })
+        } else {
+            toast.error('There is no such category')
+            history.push('/not-found')
         }
     }, [urlEnd, history, category])
 
-    if (!category) {
-        toast.error('There is no such category')
-        return <Redirect to='/not-found' />
-    } else {
-        return (
-            <div >
-                {loading
-                    ? <div className="jumbotron"><h1>Loading</h1><Loader /></div>
-                    : <div className="container search">
-                        <div className="row">
-                            <div className="col">
-                                <div className="jumbotron">
-                                    <h1>{category.name}</h1>
-                                    <h1>
-                                        <img src={category.url} alt="" width="200px" />
-                                    </h1>
-                                    <SearchForm />
-                                </div>
-                                <AdsListing ads={ads} name={name} message={message} />
+
+    return (
+        <div >
+            {loading
+                ? <div className="jumbotron"><h1>Loading</h1><Loader /></div>
+                : <div className="container search">
+                    <div className="row">
+                        <div className="col">
+                            <div className="jumbotron">
+                                <h1>{category.name}</h1>
+                                <h1>
+                                    <img src={category.url} alt="" width="200px" />
+                                </h1>
+                                <SearchForm />
                             </div>
+                            <AdsListing ads={ads} name={name} message={message} />
                         </div>
                     </div>
-                }
-            </div >
-        )
-    }
+                </div>}
+        </div >
+    )
 }
 
 export default Category
