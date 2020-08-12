@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import SearchForm from '../../components/search-form'
 import categories from '../../utils/categories'
 import { Img, } from 'react-image'
+import ImageLoader from '../image-loader'
 
 const BrowseCategories = () => {
 
@@ -10,7 +11,7 @@ const BrowseCategories = () => {
         <li key={index}>
             <Link to={'/category/' + category.link}>
                 <Img src={category.url} alt="" width="100px"
-                    loader={<ImgLoader />} />
+                    loader={<ImageLoader />} />
                 <p>{category.name}</p>
             </Link>
         </li>
