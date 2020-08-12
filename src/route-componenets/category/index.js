@@ -61,7 +61,7 @@ const Category = () => {
                             <div className="jumbotron">
                                 <h1>{category.name}</h1>
                                 <h1>
-                                    <Img src={category.url} alt="" width="200px" loader={<ImgLoader />} />
+                                    <Img src={category.url} alt="" width="200px" loader={<ImageLoader />} />
                                 </h1>
                                 <SearchForm />
                             </div>
