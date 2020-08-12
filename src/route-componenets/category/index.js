@@ -6,6 +6,8 @@ import AdsListing from '../../components/ad-listing'
 import Loader from '../../components/loader'
 import SearchForm from '../../components/search-form'
 import { toast } from 'react-toastify'
+import { Img, } from 'react-image'
+import ImageLoader from '../../components/image-loader'
 
 
 const Category = () => {
@@ -59,7 +61,7 @@ const Category = () => {
                             <div className="jumbotron">
                                 <h1>{category.name}</h1>
                                 <h1>
-                                    <img src={category.url} alt="" width="200px" />
+                                    <Img src={category.url} alt="" width="200px" loader={<ImgLoader />} />
                                 </h1>
                                 <SearchForm />
                             </div>

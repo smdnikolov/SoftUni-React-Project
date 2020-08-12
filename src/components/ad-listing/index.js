@@ -2,7 +2,8 @@ import React, { useState, useEffect, } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import BrowseCategories from '../../components/browse-categories'
 import Pagination from '../pagination'
-
+import { Img, } from 'react-image'
+import ImageLoader from '../image-loader'
 
 const AdListing = (props) => {
     const [ads, setAds] = useState(props.ads)
@@ -20,7 +21,8 @@ const AdListing = (props) => {
                 <Link to={"/details/" + ad.id}>
                     <div className="row row-container">
                         <div className="col-sm-4 services-section">
-                            <img className="img-card"
+                            <Img className="img-card"
+                                loader={<ImageLoader />}
                                 src={ad.imageUrl}
                                 alt="" />
                         </div>

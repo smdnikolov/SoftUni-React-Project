@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import notFoundImg from '../../utils/error-404.png'
+import { Img, } from 'react-image'
+import ImageLoader from '../../components/image-loader'
 
 const NotFound = () => {
 
@@ -13,7 +15,7 @@ const NotFound = () => {
             <h1>We could not find what You were looking for :(</h1>
             <div className="row">
                 <div className="col">
-                    <img src={notFoundImg} width="30%" alt="" />
+                    <Img src={notFoundImg} width="30%" alt="" loader={<ImageLoader />} />
                 </div>
             </div>
         </div>

@@ -6,6 +6,8 @@ import firebase from '../../firebase.js'
 import { UserContext } from '../../Store'
 import { useHistory } from 'react-router-dom'
 import { toast } from 'react-toastify'
+import { Img, } from 'react-image'
+import ImageLoader from '../../components/image-loader'
 
 const Profile = () => {
     const styles = { 'marginTop': '140px' }
@@ -85,7 +87,7 @@ const Profile = () => {
                         <div className="col">
                             <div className="jumbotron prof">
                                 <h1>{user}'s Profile:</h1>
-                                <img src={icon} alt="" width="150px" />
+                                <Img src={icon} alt="" width="150px" loaer={<ImageLoader />} />
                                 <div className="profile">
                                     <button id="myAds" onClick={(e) => toggleSection(e)} className="btn-primary shadow-none">My Ads</button>
                                     <button id="followedAds" onClick={(e) => toggleSection(e)} className="btn-primary shadow-none">Followed Ads</button>
