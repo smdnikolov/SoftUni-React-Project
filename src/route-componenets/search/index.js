@@ -15,7 +15,9 @@ const Search = () => {
     const { register, handleSubmit } = useForm()
     const history = useHistory()
     history.listen(() => {
-        localStorage.removeItem('query')
+        if (!history.location.hash) {
+            localStorage.removeItem('query')
+        }
     });
 
     const [message, setMessage] = useState('')
