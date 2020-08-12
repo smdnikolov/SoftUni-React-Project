@@ -20,7 +20,7 @@ const Home = () => {
                             <div className="jumbotron">
                                 <h1>Welcome to the Online Market</h1>
                                 <p>Browse the Categories to find what you need</p>
-                                <BrowseCategories setter={setLoading} setting={false} />
+                                <BrowseCategories setter={setLoading} />
                             </div>
                         </div>
                     </div >
