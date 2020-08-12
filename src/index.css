@@ -420,3 +420,7 @@ margin-top: 140px;
     transform: rotate(-360deg);
   }
 }  
+.title {
+  width: 100%;
+  font-size: 36px;
+}

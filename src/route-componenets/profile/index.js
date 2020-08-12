@@ -86,7 +86,7 @@ const Profile = () => {
                     <div className="row">
                         <div className="col">
                             <div className="jumbotron prof">
-                                <h1>{user}'s Profile:</h1>
+                                <p className="title">{user}'s Profile:</p>
                                 <Img src={icon} alt="" width="150px" loader={<ImageLoader />} />
                                 <div className="profile">
                                     <button id="myAds" onClick={(e) => toggleSection(e)} className="btn-primary shadow-none">My Ads</button>
